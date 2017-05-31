@@ -160,6 +160,24 @@ class Address(models.Model):
     phone_number = fields.Integer('Phone Number')
     address_id = fields.Many2one('hr.employee', string='Address Reference', index=True, required=False, ondelete='cascade')
 
+class LangaugeNumber(models.Model):
+    _name = 'spc.language.name'
+        
+    name = fields.Char(string='Language')
+
+class LanguageProficency(models.Model):
+    _name = 'spc.language.proficency'
+    
+    name = fields.Char(string='level')
+
+class Language(models.Model):
+    _name = 'spc.language'
+
+    name =fields.Many2one('spc.language.name',string='Language')
+    speak = fields.Many2one('spc.language.proficency',string='Speak')
+    read = fields.Many2one('spc.language.proficency',string='Read/Understand')
+    write = fields.Many2one('spc.language.proficency',string='Write')
+        
 
 class Religion(models.Model):
     _name = 'hr.employee.religion'
@@ -190,6 +208,44 @@ class NameTitle(models.Model):
     name = fields.Char('Title')
     name_th = fields.Char('Title Th')
 
+class PastJob(models.Model):
+    _name = 'hr.employee.pastjob'
+
+    name = fields.Char(string='Present Company',required=True)
+    company_address = fields.Char(string='Address')
+    start_date = fields.Date(string='Start Date')
+    end_date = fields.Date(string='End Date')
+    first_position = fields.Char(string='First Position',required=True)
+    last_poition = fields.Char(string='Last Position',required=True)
+    start_salary = fields.Integer(string='Starting Salary')
+    final_salary = fields.Integer(string='Final Salary')
+    reason = fields.Char(string='Reason For Changing',required=True)
+
+class CarLicense(models.Model):
+    _name ='hr.employee.bikelicense'
+
+    name = fields.Char(string='Type')    
+
+class BikeLicense(models.Model):
+    _name ='hr.employee.carlicense'
+
+    name = fields.Char(string='Type')         
+
+class References(models.Model):
+    _name = 'hr.employee.ref'
+
+    name = fields.Char(string='Name/Surname')
+    ref_relationship = fields.Many2one('hr.employee.relation')
+    ref_company = fields.Char(string ='Company')
+    ref_emp = fields.Boolean(string ='SAHA Employee')
+    ref_postion = fields.Char(string ='Position')
+    ref_tel = fields.Char(string ='Tel')
+    
+class ReferencesRelation(object):
+    _name = 'hr.employee.relation'
+
+    name =fields.Char(string='Relationship')
+                
 
 class Employee(models.Model):
     _inherit = 'hr.employee'
@@ -204,6 +260,10 @@ class Employee(models.Model):
         print 'onchange title', self
         self.title_en = self.title_id.name
         self.title_th = self.title_id.name_th
+
+    @api.onchange('citized_id')
+    def on_chan_cid(self):
+        print 'onchange title', self
 
     title_id = fields.Many2one('hr.employee.title', string='Title', required=True)
     title_en = fields.Char(string='Title En', required=True)
@@ -227,9 +287,43 @@ class Employee(models.Model):
     employee_number = fields.Char(string='Employee ID')
     address_line = fields.One2many('spc.address', 'address_id', string='Address', copy=True)
 
+        # education background
+    primary_school = fields.Char(string='Primary School',required=True)
+    secondary_school = fields.Char(string='Secondary School',required=True)
+    high_school = fields.Char(string='Highy School',required=True)
+    colleage = fields.Char(string='College / Vocation',required=True)
+    bachelor_degree = fields.Char(string='Bachelor Degree',required=True)
+    master_degree = fields.Char(string='Master Degree or Higher',required=True)
+    intend_study = fields.Boolean(string='Intend Study')
+    intend_where = fields.Char(string='Where?')
+    further_study = fields.Char(string='Further Studying at',required=True)
+    institute_activity = fields.Char(string=' Activity in The Institute',required=True)
+    social_activity = fields.Char(string=' Social Activity',required=True)
+
+    #language skills
+    language_skill = fields.One2many('spc.language','name',string='Langauge')
+
     @api.onchange('first_name_en', 'last_name_en')
     def some(self):
         self.name = '%s %s' % (self.first_name_en, self.last_name_en)
+
+    #special_skills
+    thai_typing = fields.Integer(string=' Thai word/minute')
+    eng_typing = fields.Integer(string=' English word/minute')
+    computer_program = fields.Boolean(string="Computer Program")
+    car_license = fields.Many2one('hr.employee.carlicense',string='Car License')
+    bike_license = fields.Many2one('hr.employee.bikelicense',string='Bike License')
+
+    # employment record
+    past_job = fields.One2many('hr.employee.pastjob','name',string='Record')
+    brief = fields.Char(string='Brief Of Duties & Responsibilities in Last Job',required=True)
+    ever_worked = fields.Boolean(string="Have you ever working with SAHA GROUP?")
+    shift = fields.Boolean(string='Can you work for shift?')
+    travel = fields.Boolean(string='Are you willing to travel up country or serve the overseas training?')
+    reason_travel = fields.Char(string='Reason') 
+
+    # References
+    ref = fields.One2many('hr.employee.ref','name',string='References')
 
     # @api.model
     # def create(self, vals):

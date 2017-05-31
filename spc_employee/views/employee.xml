@@ -62,11 +62,7 @@
                             </field>
                         </group>
                         <field name="notes" placeholder="Other Information ..." colspan="4"/>
-                    </page>
-                </xpath>
-                <xpath expr="//page[@name='personal_information']" position="replace">
-                    <page name="personal_information" string="Personal Information" groups="hr.group_hr_user">
-                        <group string="Citizenship &amp; Other Information" name="citizenship">
+                                                <group string="Citizenship &amp; Other Information" name="citizenship">
                             <group >
                                 <field name="country_id" options='{"no_open": True, "no_create": True}'/>
                                 <field name="identification_id" groups="hr.group_hr_user" invisible='1'/>
@@ -88,6 +84,95 @@
                                 <field name="birthday"/>
                             </group>
                         </group>
+                        <!-- education -->
+                        <group string="Education Background" name="education">
+                            <group >
+                                <field name="primary_school"/>
+                                <field name="secondary_school"/>
+                                <field name="high_school"/>
+                            </group>
+                            <group>
+                                <field name="colleage"/>
+                                <field name="bachelor_degree"/>
+                                <field name="master_degree"/>
+                            </group>
+                            <group>
+                                <field name="intend_study"/>
+                                <field name="intend_where"/>
+                                <field name="further_study"/>
+                            </group>
+                            <group>
+                                <field name="institute_activity"/>
+                                <field name="social_activity"/>
+                            </group>
+                        </group>
+                        <!-- langauge skill -->
+                        <group string="Langauge Profiency" name="language_employee">
+                            <field name="language_skill" nolabel='1'>
+                                <tree string="Language" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="speak"/>
+                                    <field name="read"/>
+                                    <field name="write"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <!-- Special Skill -->
+                        <group string="Special Skills" name="special_skills">
+                             <group name="com_type">   
+                                <field name="thai_typing"/>
+                                <field name="eng_typing"/>
+                                <field name="computer_program"/>
+                            </group>    
+                             <group name="transport_license">
+                                <field name="car_license"/>
+                                <field name="bike_license"/>
+                            </group>
+                        </group>
+                        <!-- Employment record -->
+                         <group string="Employment Record" name="employment_record">
+                            <field name="past_job" nolabel='1'>
+                                <tree string='Record' editable="bottom">
+                                    <field name="name"/>
+                                    <field name="company_address"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="first_position"/>
+                                    <field name="last_poition"/>
+                                    <field name="start_salary"/>
+                                    <field name="final_salary"/>
+                                    <field name="reason"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <field name="brief" placeholder="Brief Of Duties &amp; Responsibilities in Last Job" colspan="4"/>  
+                        <group>
+                            <group>
+                                <field name="ever_worked"/>
+                                <field name="shift"/>
+                            </group>
+                            <group>
+                                <field name="travel"/>
+                                <field name="reason_travel"/>
+                            </group>
+                        </group> 
+                        <!-- ref -->
+                        <group string="References Person" name="reference_record">
+                            <field name="ref" nolabel='1'/>
+                                <!-- <tree string='References' editable="bottom">
+                                    <field name="name"/>
+                                    <field name="ref_relationship"/>
+                                    <field name="ref_company"/>
+                                    <field name="ref_emp"/>
+                                    <field name="ref_postion"/>
+                                    <field name="ref_postion"/>
+                                </tree>
+                            </field> -->
+                        </group> 
+                    </page>
+                </xpath>
+                <xpath expr="//page[@name='personal_information']" position="replace">
+                    <page name="personal_information" string="Personal Information" groups="hr.group_hr_user">                  
                     </page>
                 </xpath>
             </field>
