@@ -61,6 +61,7 @@
                                 </tree>
                             </field>
                         </group>
+                        
                         <field name="notes" placeholder="Other Information ..." colspan="4"/>
                                                 <group string="Citizenship &amp; Other Information" name="citizenship">
                             <group >
