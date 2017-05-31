@@ -5,6 +5,7 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
+<<<<<<< HEAD
                 <xpath expr="/form/sheet/div[2]" position="replace">
                     <group>
                         <field name="name" placeholder="Employee's Name" invisible='1'/>
@@ -85,26 +86,58 @@
                             </group>
                         </group>
                         <!-- education -->
-                        <group string="Education Background" name="education">
-                            <group >
+                        <!--<group string="Education Background" name="education">
+                            <group>
                                 <field name="primary_school"/>
                                 <field name="secondary_school"/>
                                 <field name="high_school"/>
                             </group>
+=======
+                <xpath expr="//form" position="replace">
+                    <form string="Employee">
+                        <sheet>
+                            <div class="oe_button_box" name="button_box">
+                                <button name="toggle_active" type="object" groups="hr.group_hr_user" class="oe_stat_button" icon="fa-archive">
+                                    <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                                </button>
+                            </div>
+                            <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
+>>>>>>> 105c06ff6e8b8ecfe6c9bb8d9d4e4df0e7391e77
                             <group>
-                                <field name="colleage"/>
-                                <field name="bachelor_degree"/>
-                                <field name="master_degree"/>
+                                <field name="name" placeholder="Employee's Name" invisible='1'/>
+                                <field name="employee_number"/>
                             </group>
                             <group>
-                                <field name="intend_study"/>
-                                <field name="intend_where"/>
-                                <field name="further_study"/>
+                                <field name="title_id"/>
+                                <field name="title_en" invisible='1'/>
+                                <field name="title_th" invisible='1'/>
                             </group>
-                            <group>
-                                <field name="institute_activity"/>
-                                <field name="social_activity"/>
+                            <group col="3" colspan="2">
+                                <field name="first_name_en" placeholder="First Name" string="FullName"/>
+                                <field name="last_name_en" placeholder="Last Name" nolabel='1'/>
+                                <field name="first_name_th" placeholder="ชื่อ" string="ชื่อ - นามสกุล"/>
+                                <field name="last_name_th" placeholder="นามสกุล" nolabel='1'/>
                             </group>
+<<<<<<< HEAD
+                        </group>-->
+                        <group string="Education Background" name="employment">
+                            <field name="education" nolabel='1'>
+                                <tree string='Background' editable="bottom">
+                                    <field name="level_education_id"/>
+                                    <field name="institue"/>
+                                    <field name="major"/>
+                                    <field name="gpa"/>
+                                    <field name="start_study"/>
+                                    <field name="end_study"/>
+                                </tree>
+                            </field>
+                            <field name="course" nolabel='1'>
+                                <tree string='Training Course' editable="bottom">
+                                    <field name="name"/>
+                                    <field name="institue"/>
+                                    <field name="date"/>
+                                </tree>
+                            </field>
                         </group>
                         <!-- langauge skill -->
                         <group string="Langauge Profiency" name="language_employee">
@@ -159,21 +192,170 @@
                         <!-- ref -->
                         <group string="References Person" name="reference_record">
                             <field name="ref" nolabel='1'/>
-                                <!-- <tree string='References' editable="bottom">
-                                    <field name="name"/>
-                                    <field name="ref_relationship"/>
-                                    <field name="ref_company"/>
-                                    <field name="ref_emp"/>
-                                    <field name="ref_postion"/>
-                                    <field name="ref_postion"/>
-                                </tree>
-                            </field> -->
                         </group> 
                     </page>
                 </xpath>
                 <xpath expr="//page[@name='personal_information']" position="replace">
                     <page name="personal_information" string="Personal Information" groups="hr.group_hr_user">                  
                     </page>
+=======
+                            <notebook>
+                                <page name="public" string="Public Information">
+                                    <group string="Position">
+                                        <group>
+                                            <field name="department_id"/>
+                                            <field name="position_id"/>
+                                            <field name="level" />
+                                            <field name="chief_id"/>
+                                            <field name="parent_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="sign_contact_date"/>
+                                            <field name="onboarding_date"/>
+                                            <field name="probation_end_date"/>
+                                            <field name="employee_type"/>
+                                            <field name="status"/>
+                                        </group>
+                                    </group>
+                                    <group string="Contact Information" invisible='1'>
+                                        <field name="address_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
+                                        <field name="mobile_phone"/>
+                                        <field name="work_location"/>
+                                        <field name="work_email" widget="email"/>
+                                        <field name="work_phone"/>
+                                    </group>
+                                    <group string="Address">
+                                        <field name='address_line' nolabel='1'>
+                                            <tree string='Address' editable="bottom">
+                                                <field name='address_type'/>
+                                                <field name='addr1'/>
+                                                <field name='subdistrict_id' />
+                                                <field name='district_id' />
+                                                <field name='provice_id' />
+                                                <field name='zipcode_id'/>
+                                                <field name="address_id" invisible='1'/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                    <field name="notes" placeholder="Other Information ..." colspan="4"/>
+                                    <group string="Citizenship &amp; Other Information" name="citizenship">
+                                        <group >
+                                            <field name="country_id" options='{"no_open": True, "no_create": True}'/>
+                                            <field name="identification_id" groups="hr.group_hr_user" invisible='1'/>
+                                            <field name="citizen_id" groups="hr.group_hr_user"/>
+                                            <field name="gender"/>
+                                            <field name="marital"/>
+                                            <field name="passport_id" groups="hr.group_hr_user" invisible='1'/>
+                                            <field name="bank_account_id" context="{'default_partner_id': address_home_id}" invisible='1'/>
+                                        </group>
+                                        <group string="Contact Information" invisible='1'>
+                                            <field name="address_home_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
+                                        </group>
+                                        <group>
+                                            <field name="religion"/>
+                                            <field name="blood_group"/>
+                                            <field name="birthday"/>
+                                        </group>
+                                        <group string="Birth" invisible='1'>
+                                            <field name="birthday"/>
+                                        </group>
+                                    </group>
+                                    <!-- education -->
+                                    <group string="Education Background" name="education">
+                                        <group >
+                                            <field name="primary_school"/>
+                                            <field name="secondary_school"/>
+                                            <field name="high_school"/>
+                                        </group>
+                                        <group>
+                                            <field name="colleage"/>
+                                            <field name="bachelor_degree"/>
+                                            <field name="master_degree"/>
+                                        </group>
+                                        <group>
+                                            <field name="intend_study"/>
+                                            <field name="intend_where"/>
+                                            <field name="further_study"/>
+                                        </group>
+                                        <group>
+                                            <field name="institute_activity"/>
+                                            <field name="social_activity"/>
+                                        </group>
+                                    </group>
+                                    <!-- langauge skill -->
+                                    <group string="Langauge Profiency" name="language_employee">
+                                        <field name="language_skill" nolabel='1'>
+                                            <tree string="Language" editable="bottom">
+                                                <field name="name"/>
+                                                <field name="speak"/>
+                                                <field name="read"/>
+                                                <field name="write"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                    <!-- Special Skill -->
+                                    <group string="Special Skills" name="special_skills">
+                                        <group name="com_type">
+                                            <field name="thai_typing"/>
+                                            <field name="eng_typing"/>
+                                            <field name="computer_program"/>
+                                        </group>
+                                        <group name="transport_license">
+                                            <field name="car_license"/>
+                                            <field name="bike_license"/>
+                                        </group>
+                                    </group>
+                                    <!-- Employment record -->
+                                    <group string="Employment Record" name="employment_record">
+                                        <field name="past_job" nolabel='1'>
+                                            <tree string='Record' editable="bottom">
+                                                <field name="name"/>
+                                                <field name="company_address"/>
+                                                <field name="start_date"/>
+                                                <field name="end_date"/>
+                                                <field name="first_position"/>
+                                                <field name="last_poition"/>
+                                                <field name="start_salary"/>
+                                                <field name="final_salary"/>
+                                                <field name="reason"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                    <field name="brief" placeholder="Brief Of Duties &amp; Responsibilities in Last Job" colspan="4"/>
+                                    <group>
+                                        <group>
+                                            <field name="ever_worked"/>
+                                            <field name="shift"/>
+                                        </group>
+                                        <group>
+                                            <field name="travel"/>
+                                            <field name="reason_travel"/>
+                                        </group>
+                                    </group>
+                                    <!-- ref -->
+                                    <group string="References Person" name="reference_record">
+                                        <field name="ref" nolabel='1'/>
+                                        <!-- <tree string='References' editable="bottom"><field name="name"/><field name="ref_relationship"/><field name="ref_company"/><field name="ref_emp"/><field name="ref_postion"/><field name="ref_postion"/></tree></field> -->
+                                    </group>
+                                    <field name="notes" placeholder="Other Information ..." colspan="4"/>
+                                </page>
+                                <page name="personal_information" string="Personal Information" groups="hr.group_hr_user" invisible='1'/>
+                                <page name="hr_settings" string="HR Settings" groups="hr.group_hr_user">
+                                    <group>
+                                        <group string='Status' name="active_group">
+                                            <field name="company_id" groups="base.group_multi_company"/>
+                                            <field name="user_id" string="Related User"/>
+                                        </group>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </sheet>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </form>
+>>>>>>> 105c06ff6e8b8ecfe6c9bb8d9d4e4df0e7391e77
                 </xpath>
             </field>
         </record>

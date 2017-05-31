@@ -1,36 +1,20 @@
 # -*- coding: utf-8 -*-
-
 from odoo import models, fields, api
 
 import sys
 import os
 
-# class Division(models.Model):
-#     _name = 'hr.division'
-
-#     name = fields.Char('Division Name', required=True)
-#     parent_id = fields.Many2one(
-#         'hr.department', string='Department', index=True)
-
-#     active = fields.Boolean('Active', default=True)
-#     company_id = fields.Many2one('res.company', string='Company',
-#                                  index=True, default=lambda self: self.env.user.company_id)
-#     note = fields.Text('Note')
-#     color = fields.Integer('Color Index')
-
-
-# class SubDivision(models.Model):
-#     _name = 'hr.sub_division'
-
-#     name = fields.Char('Sub Division Name', required=True)
-#     parent_id = fields.Many2one('hr.division', string='Division', index=True)
-
-#     active = fields.Boolean('Active', default=True)
-#     company_id = fields.Many2one('res.company', string='Company',
-#                                  index=True, default=lambda self: self.env.user.company_id)
-#     note = fields.Text('Note')
-#     color = fields.Integer('Color Index')
-
+class NameGet:
+    def name_get(self, vals):
+        print 'name_get: ', self
+        print vals
+        res = []
+        for record in vals:
+            if vals._context['lang'] == 'en_US':
+                res.append((record.id, record.name))
+            else:
+                res.append((record.id, record.name_th))
+        return res
 
 class Department(models.Model):
     _inherit = 'hr.department'
@@ -38,34 +22,6 @@ class Department(models.Model):
     # division_id = fields.Many2many('hr.division', string='Division')
     name_th = fields.Char(string='Department Name Th', require=True)
     code = fields.Char(string='Code', require=True)
-
-    # @api.multi
-    # def write(self, vals):
-    #     """ If updating manager of a department, we need to update all the employees
-    #         of department hierarchy, and subscribe the new manager.
-    #     """
-    #     # TDE note: auto-subscription of manager done by hand, because currently
-    #     # the tracking allows to track+subscribe fields linked to a res.user record
-    #     # An update of the limited behavior should come, but not currently
-    #     # done.
-    #     print '-----vals', vals
-    #     if 'manager_id' in vals:
-    #         manager_id = vals.get("manager_id")
-    #         if manager_id:
-    #             manager = self.env['hr.employee'].browse(manager_id)
-    #             # subscribe the manager user
-    #             if manager.user_id:
-    #                 self.message_subscribe_users(user_ids=manager.user_id.ids)
-    #         employees = self.env['hr.employee']
-    #         for department in self:
-    #             employees = employees | self.env['hr.employee'].search([
-    #                 ('id', '!=', manager_id),
-    #                 ('department_id', '=', department.id),
-    #                 ('parent_id', '=', department.manager_id.id)
-    #             ])
-    #         employees.write({'parent_id': manager_id})
-    #     return super(Department, self).write(vals)
-
 
 class Employee_type(models.Model):
     _name = 'hr.employee.type'
@@ -76,15 +32,9 @@ class Employee_type(models.Model):
 class Position(models.Model):
     _name = 'hr.position'
 
-    # @api.multi
-    # def name_get(self):
-    #     res = []
-    #     for record in self:
-    #         if self._context['lang'] == 'en_US':
-    #             res.append((record.id, record.name_en))
-    #         else:
-    #             res.append((record.id, record.name))
-    #     return res
+    @api.multi
+    def name_get(self):
+        return NameGet().name_get(self)
 
     name = fields.Char(string='Position Eng')
     name_th = fields.Char(string='Position Thai')
@@ -96,17 +46,17 @@ class Status(models.Model):
 
     @api.multi
     def name_get(self):
-        res = []
-        for record in self:
-            name = '%s / %s' % (record.name, record.name_th)
-            res.append((record.id, name))
-        return res
+        return NameGet().name_get(self)
 
     name = fields.Char(string='Status EN')
     name_th = fields.Char(string='Status TH')
 
 class Provice(models.Model):
     _name = 'spc.address.provice'
+
+    @api.multi
+    def name_get(self):
+        return NameGet().name_get(self)
 
     name = fields.Char(string='Provice EN')
     name_th = fields.Char(string='Provice TH')
@@ -115,6 +65,10 @@ class Provice(models.Model):
 class District(models.Model):
     _name = 'spc.address.district'
 
+    @api.multi
+    def name_get(self):
+        return NameGet().name_get(self)
+
     name = fields.Char(string='District EN')
     name_th = fields.Char(string='District TH')
     pid = fields.Char(string='PID')
@@ -122,6 +76,10 @@ class District(models.Model):
 
 class Subdistrict(models.Model):
     _name = 'spc.address.subdistrict'
+
+    @api.multi
+    def name_get(self):
+        return NameGet().name_get(self)
 
     name = fields.Char(string='Subdistrict EN')
     name_th = fields.Char(string='Subdistrict TH')
@@ -139,11 +97,7 @@ class AddressType(models.Model):
 
     @api.multi
     def name_get(self):
-        res = []
-        for record in self:
-            name = '%s / %s' % (record.name, record.name_th)
-            res.append((record.id, name))
-        return res
+        return NameGet().name_get(self)
 
     name = fields.Char(string='Address Type EN')
     name_th = fields.Char(string='Address Type TH')
@@ -173,11 +127,46 @@ class LanguageProficency(models.Model):
 class Language(models.Model):
     _name = 'spc.language'
 
+    def level(self):
+        return [('fair','Fair'),('good','Good'),('excellent','Excellent')]
+
     name =fields.Many2one('spc.language.name',string='Language')
-    speak = fields.Many2one('spc.language.proficency',string='Speak')
-    read = fields.Many2one('spc.language.proficency',string='Read/Understand')
-    write = fields.Many2one('spc.language.proficency',string='Write')
+    speak = fields.Selection(level,string='Speak')
+    read = fields.Selection(level,string='Read/Understand')
+    write = fields.Selection(level,string='Write')
         
+class Education(models.Model):
+    _name = 'spc.employee.edu'
+
+    level_education_id = fields.Many2one('spc.employee.edulevel',string='Level')
+    # primary_school = fields.Char(string='Primary School',required=True)
+    # secondary_school = fields.Char(string='Secondary School',required=True)
+    # high_school = fields.Char(string='Highy School',required=True)
+    # colleage = fields.Char(string='College / Vocation',required=True)
+    # bachelor_degree = fields.Char(string='Bachelor Degree',required=True)
+    # master_degree = fields.Char(string='Master Degree or Higher',required=True)
+    institue = fields.Char(string='Institue')
+    major = fields.Char(string='Major')
+    gpa = fields.Char(string='G.P.A.')
+    start_study = fields.Date(string='From')
+    end_study = fields.Date(string='To')
+    intend_study = fields.Boolean(string='Intend Study')
+    intend_where = fields.Char(string='Where?')
+    further_study = fields.Char(string='Further Studying at',required=True)
+    institute_activity = fields.Char(string=' Activity in The Institute',required=True)
+    social_activity = fields.Char(string=' Social Activity',required=True)
+
+class Course(models.Model):
+    _name = 'spc.employee.educourse'
+
+    name = fields.Char(string='Course')
+    institue = fields.Char(string='Institue')
+    date = fields.Date(string='Date')
+
+class EducationLevel(models.Model):
+    _name = 'spc.employee.edulevel'
+
+    name = fields.Char(string='Level of Education')
 
 class Religion(models.Model):
     _name = 'hr.employee.religion'
@@ -235,13 +224,13 @@ class References(models.Model):
     _name = 'hr.employee.ref'
 
     name = fields.Char(string='Name/Surname')
-    ref_relationship = fields.Many2one('hr.employee.relation')
+    ref_relationship = fields.Many2one('hr.employee.relation',string='Relationship')
     ref_company = fields.Char(string ='Company')
     ref_emp = fields.Boolean(string ='SAHA Employee')
     ref_postion = fields.Char(string ='Position')
     ref_tel = fields.Char(string ='Tel')
     
-class ReferencesRelation(object):
+class ReferencesRelation(models.Model):
     _name = 'hr.employee.relation'
 
     name =fields.Char(string='Relationship')
@@ -288,20 +277,10 @@ class Employee(models.Model):
     address_line = fields.One2many('spc.address', 'address_id', string='Address', copy=True)
 
         # education background
-    primary_school = fields.Char(string='Primary School',required=True)
-    secondary_school = fields.Char(string='Secondary School',required=True)
-    high_school = fields.Char(string='Highy School',required=True)
-    colleage = fields.Char(string='College / Vocation',required=True)
-    bachelor_degree = fields.Char(string='Bachelor Degree',required=True)
-    master_degree = fields.Char(string='Master Degree or Higher',required=True)
-    intend_study = fields.Boolean(string='Intend Study')
-    intend_where = fields.Char(string='Where?')
-    further_study = fields.Char(string='Further Studying at',required=True)
-    institute_activity = fields.Char(string=' Activity in The Institute',required=True)
-    social_activity = fields.Char(string=' Social Activity',required=True)
-
+    education = fields.One2many('spc.employee.edu','level_education_id',string='Education Background')
+    course = fields.One2many('spc.employee.educourse','name',string='Course')
     #language skills
-    language_skill = fields.One2many('spc.language','name',string='Langauge')
+    language_skill = fields.One2many('spc.language', 'name', string='Langauge')
 
     @api.onchange('first_name_en', 'last_name_en')
     def some(self):
