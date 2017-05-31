@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="calendar_event_on_boarding" model="ir.ui.view">
+            <field name="name">calendar.event_on_boarding</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page/group[2]" position="after">
+                    <group>
+                        <field name="event_onboarding"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="onboarding_calendar_form">
+            <field name="name">onboarding.calendar.form</field>
+            <field name="model">onboarding.calendar</field>
+            <field name="arch" type="xml">
+                <form string="On Boarding">
+                    <sheet>
+                        <group col='4' colspan='2'>
+                            <field name="name" colspan='4'/>
+                            <field name="description" colspan='4'/>
+                            <field name="from_date" />
+                            <field name="to_date" />
+                            <field name="calendar_event" colspan='4'/>
+                        </group>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Filter</h3>
+                            </div>
+                            <div class="panel-body">
+                                <group>
+                                    <field name="department"/>
+                                    <field name="division"/>
+                                    <field name="sub_division"/>
+                                    <field name="level"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Exclude</h3>
+                            </div>
+                            <div class="panel-body">
+                                <group>
+                                    <field name="exclude_department"/>
+                                    <field name="exclude_division"/>
+                                    <field name="exclude_sub_division"/>
+                                    <field name="exclude_level"/>
+                                </group>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_onboarding_event" model="ir.actions.act_window">
+            <field name="name">Event</field>
+            <field name="res_model">onboarding.calendar</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click to schedule a new meeting.</p>
+                <p>The calendar is shared between employees and fully integrated with other applications such as the employee holidays or the business opportunities.</p>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,139 @@
+<odoo>
+    <data>
+        <record id="spc_address_subdistrict_form" model="ir.ui.view">
+            <field name="name">Subdistrict</field>
+            <field name="model">spc.address.subdistrict</field>
+            <field name="arch" type="xml">
+                <form string="Position">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="name_th"/>
+                            <field name="pid" col='2'/>
+                            <field name="district_pid" col='2'/>
+                            <field name="provice_pid" col='2'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="spc_address_subdistrict_tree" model="ir.ui.view">
+            <field name="name">Subdistrict Tree</field>
+            <field name="model">spc.address.subdistrict</field>
+            <field name="arch" type="xml">
+                <tree string="Level">
+                    <field name="name"/>
+                    <field name="name_th"/>
+                    <field name="pid" />
+                    <field name="district_pid"/>
+                    <field name="provice_pid" />
+                </tree>
+            </field>
+        </record>
+        <record id="spc_address_subdistrict_view" model="ir.actions.act_window">
+            <field name="name">Subdistrict</field>
+            <field name="res_model">spc.address.subdistrict</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="spc_address_district_form" model="ir.ui.view">
+            <field name="name">District</field>
+            <field name="model">spc.address.district</field>
+            <field name="arch" type="xml">
+                <form string="Position">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="name_th"/>
+                            <field name="pid" col='2'/>
+                            <field name="provice_pid" col='2'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="spc_address_district_tree" model="ir.ui.view">
+            <field name="name">District Tree</field>
+            <field name="model">spc.address.district</field>
+            <field name="arch" type="xml">
+                <tree string="Level">
+                    <field name="name"/>
+                    <field name="name_th"/>
+                    <field name="pid" />
+                    <field name="provice_pid" />
+                </tree>
+            </field>
+        </record>
+        <record id="spc_address_district_view" model="ir.actions.act_window">
+            <field name="name">District</field>
+            <field name="res_model">spc.address.district</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="spc_address_provice_form" model="ir.ui.view">
+            <field name="name">Provice</field>
+            <field name="model">spc.address.provice</field>
+            <field name="arch" type="xml">
+                <form string="Position">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="name_th"/>
+                            <field name="pid" col='2'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="spc_address_provice_tree" model="ir.ui.view">
+            <field name="name">Provice Tree</field>
+            <field name="model">spc.address.provice</field>
+            <field name="arch" type="xml">
+                <tree string="Level">
+                    <field name="name"/>
+                    <field name="name_th"/>
+                    <field name="pid" />
+                </tree>
+            </field>
+        </record>
+        <record id="spc_address_provice_view" model="ir.actions.act_window">
+            <field name="name">Provice</field>
+            <field name="res_model">spc.address.provice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="spc_address_zipcode_form" model="ir.ui.view">
+            <field name="name">Zipcode</field>
+            <field name="model">spc.address.zipcode</field>
+            <field name="arch" type="xml">
+                <form string="Position">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="spc_address_zipcode_tree" model="ir.ui.view">
+            <field name="name">Zipcode Tree</field>
+            <field name="model">spc.address.zipcode</field>
+            <field name="arch" type="xml">
+                <tree string="Level">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="spc_address_zipcode_view" model="ir.actions.act_window">
+            <field name="name">Zipcode</field>
+            <field name="res_model">spc.address.zipcode</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_address" name='Address' parent="hr.menu_human_resources_configuration" sequence="2"/>
+        <menuitem id="menu_spc_address_subdistrict_view" parent="menu_address" action="spc_address_subdistrict_view" sequence="1"/>
+        <menuitem id="menu_spc_address_district_view" parent="menu_address" action="spc_address_district_view" sequence="2"/>
+        <menuitem id="menu_spc_address_provice_view" parent="menu_address" action="spc_address_provice_view" sequence="3"/>
+        <menuitem id="menu_spc_address_zipcode_view" parent="menu_address" action="spc_address_zipcode_view" sequence="4"/>
+    </data>
+</odoo>

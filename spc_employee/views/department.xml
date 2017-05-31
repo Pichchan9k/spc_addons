@@ -1,0 +1,228 @@
+<odoo>
+    <data>
+        <record id="hr_view_employee_filter_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.search_inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="position_id"/>
+                    <field name="level"/>
+                </xpath>
+            </field>
+        </record>
+         <record id="act_employee_from_position" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form,tree</field>
+            <field name="search_view_id" ref="hr_view_employee_filter_inherit"/>
+            <field name="context">{"search_default_position_id": [active_id],"default_position_id": active_id}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click to add a new sub division.</p>
+            </field>
+        </record>
+            
+        <record id="view_position_filter" model="ir.ui.view">
+            <field name="name">Position Filter</field>
+            <field name="model">hr.position</field>
+            <field name="arch" type="xml">
+                <search string="Position">
+                    <field name="name" string="Position"/>
+                </search>
+            </field>
+        </record>
+        <record id="employee_position_form" model="ir.ui.view">
+            <field name="name">Employee Position Form</field>
+            <field name="model">hr.position</field>
+            <field name="arch" type="xml">
+                <form string="Position">
+                    <sheet>
+                        <group col="4">
+                            <field name="name"/>
+                            <field name="name_th"/>
+                            <field name="level" col='2'/>
+                            <field name="code" col='2'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="employee_position_tree" model="ir.ui.view">
+            <field name="name">Employee Position Tree</field>
+            <field name="model">hr.position</field>
+            <field name="arch" type="xml">
+                <tree string="Level">
+                    <field name="name"/>
+                    <field name="name_th"/>
+                    <field name="level" col='2'/>
+                    <field name="code" col='2'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_position_view_kanban" model="ir.ui.view" >
+            <field name="name">hr.position.kanban</field>
+            <field name="model">hr.position</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_hr_kanban">
+                    <field name="name"/>
+                    <!--<field name="company_id"/>
+                    <field name="manager_id"/>-->
+                    <!--<field name="color"/>-->
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!--<div t-attf-class="#{kanban_color(record.color.raw_value)}">-->
+                            <div>
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary"><field name="name"/></div>
+                                        <!--<div class="o_secondary"><field name="company_id"/></div>-->
+                                    </div>
+                                    <div class="o_kanban_manage_button_section">
+                                        <a class="o_kanban_manage_toggle_button" href="#">More <i class="fa fa-caret-down"/></a>
+                                    </div>
+                                </div>
+                                <div class="container o_kanban_card_content o_visible">
+                                    <div class="row">
+                                        <div class="col-xs-12 o_kanban_primary_left">
+                                            <button class="btn btn-primary" name="%(act_employee_from_position)d" type="action">Employees</button>
+                                        </div>
+                                    </div>
+                                </div><div class="container o_kanban_card_manage_pane o_invisible">
+                                    <div class="row">
+                                        <div class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_to_do">
+                                            <div class="o_kanban_card_manage_title">
+                                                <span>To Do</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_to_approve">
+                                            <div class="o_kanban_card_manage_title">
+                                                <span>To Approve</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_reports">
+                                            <div class="o_kanban_card_manage_title">
+                                                <span>Reports</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                        <!--<div class="col-xs-8">
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                        </div>-->
+                                        <div class="col-xs-4 text-right">
+                                            <a type="edit">Settings</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="employee_position_view" model="ir.actions.act_window">
+            <field name="name">Position</field>
+            <field name="res_model">hr.position</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <menuitem id="menu_view_position_form" parent="hr.menu_hr_root" action="employee_position_view" groups="hr.group_hr_user" sequence="91"/>
+
+         <record id="act_position_from_department" model="ir.actions.act_window">
+            <field name="name">Positions</field>
+            <field name="res_model">hr.position</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form,tree</field>
+            <field name="search_view_id" ref="view_position_filter"/>
+            <field name="context">{"search_default_position_id": [active_id],"default_position_id": active_id}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click to add a new sub division.</p>
+            </field>
+        </record>
+
+        <record id="hr_department_form_inherit" model="ir.ui.view">
+            <field name="name">hr.department.form_inherit</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="name_th"/>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="code"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr.hr_department_view_kanban" model="ir.ui.view" >
+            <field name="name">hr.department.kanban</field>
+            <field name="model">hr.department</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_hr_kanban">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="manager_id"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{kanban_color(record.color.raw_value)}">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary"><field name="display_name"/></div>
+                                        <!--<div class="o_secondary"><field name="company_id"/></div>-->
+                                    </div>
+                                    <div class="o_kanban_manage_button_section">
+                                        <a class="o_kanban_manage_toggle_button" href="#">More <i class="fa fa-caret-down"/></a>
+                                    </div>
+                                </div>
+                                <div class="container o_kanban_card_content o_visible">
+                                    <div class="row">
+                                        <div class="col-xs-12 o_kanban_primary_left">
+                                            <button class="btn btn-primary" name="%(hr.act_employee_from_department)d" type="action">Employees</button>
+                                            <!--<button class="btn btn-primary" name="%(act_position_from_department)d" type="action">Positions</button>-->
+                                        </div>
+                                        <!--<div class="col-xs-6 o_kanban_primary_right">
+                                            
+                                        </div>-->
+                                    </div>
+                                </div><div class="container o_kanban_card_manage_pane o_invisible">
+                                    <div class="row">
+                                        <div class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_to_do">
+                                            <div class="o_kanban_card_manage_title">
+                                                <span>To Do</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_to_approve">
+                                            <div class="o_kanban_card_manage_title">
+                                                <span>To Approve</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 o_kanban_card_manage_section o_kanban_manage_reports">
+                                            <div class="o_kanban_card_manage_title">
+                                                <span>Reports</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                        <div class="col-xs-8">
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                        </div>
+                                        <div class="col-xs-4 text-right">
+                                            <a type="edit">Settings</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <menuitem action="hr.open_module_tree_department" id="hr.menu_hr_department_tree" parent="hr.menu_hr_root" sequence="4" groups="hr.group_hr_user"/>
+    </data>
+</odoo>

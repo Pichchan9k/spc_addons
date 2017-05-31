@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="onboarding_equipment_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form_equipment_inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="spc_employee.hr_employee_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='citizenship']" position="after">
+                    <group>
+                        <field name="equipment_onboarding_id"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record id="hr_equipment_view_form_inherit" model="ir.ui.view">
+            <field name="name">equipment.form_inherit</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="action_draft" type="object" string="Reset to draft" states="confirmed,done"/>
+                        <button name="action_confirm" type="object" string="Confirm" states="draft" class="oe_highlight"/>
+                        <button name="action_done" type="object" string="Mark as done" states="confirmed" class="oe_highlight"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="onboarding_equipment_form">
+            <field name="name">onboarding.equipment.form</field>
+            <field name="model">onboarding.equipment</field>
+            <field name="arch" type="xml">
+                <form string="On Boarding">
+                    <sheet>
+                        <group col='4' colspan='2'>
+                            <field name="name" colspan='4'/>
+                            <field name="description" colspan='4'/>
+                            <!--<field name="serial_number" colspan='4'/>-->
+                            <field name="from_date" />
+                            <field name="to_date" />
+                            <field name="equipment_id" colspan='4'>
+                                <tree>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <label for="for_all"/>
+                                <field class="panel-title" name="for_all"/>
+                            </div>
+                        </div>
+                        <div class="panel panel-primary" attrs="{'invisible': [('for_all', '=', True)]}">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Filter</h3>
+                            </div>
+                            <div class="panel-body">
+                                <group>
+                                    <field name="department_id"/>
+                                    <field name="position_id"/>
+                                    <field name="level"/>
+                                </group>
+                            </div>
+                        </div>
+                        <div class="panel panel-danger" attrs="{'invisible': [('for_all', '=', True)]}">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Exclude</h3>
+                            </div>
+                            <div class="panel-body">
+                                <group>
+                                    <field name="exclude_department_id"/>
+                                    <field name="exclude_position_id"/>
+                                    <field name="exclude_level"/>
+                                </group>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_onboarding_equipment" model="ir.actions.act_window">
+            <field name="name">Onboarding</field>
+            <field name="res_model">onboarding.equipment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click to schedule a new meeting.</p>
+                <p>The calendar is shared between employees and fully integrated with                     other applications such as the employee holidays or the business opportunities.</p>
+            </field>
+        </record>
+        <!-- equiment -->
+        <record id="action_onboarding_mastereq_form" model="ir.ui.view">
+            <field name="name">mastereq.form</field>
+            <field name="model">onboarding.equipment.mastereq</field>
+            <field name="arch" type="xml">
+                <form string="Equipments">
+                    <sheet>
+                        <group col="4">
+                            <field name="name" coslspan='4' />
+                            <field name="category_id" options="{&quot;no_open&quot;: True}" colspan='2'/>
+                            <field name="responsible_id" options="{&quot;no_open&quot;: True}"/>
+                            <field name="brand_id" options="{&quot;no_open&quot;: True}" colspan='2'/>
+                        </group>
+                        <field name="description"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="onboarding_mastereq_view_tree" model="ir.ui.view">
+            <field name="name">onboarding.mastereq.tree</field>
+            <field name="model">onboarding.equipment.mastereq</field>
+            <field name="arch" type="xml">
+                <tree string="Assign To User">
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="responsible_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="onboarding_mastereq_view_search" model="ir.ui.view">
+            <field name="name">onboarding.mastereq.search</field>
+            <field name="model">onboarding.equipment.mastereq</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="responsible_id"/>
+                    <group expand='0' string='Group by...'>
+                        <filter string='Equipment' domain="[]" context="{'group_by': 'name'}"/>
+                        <filter string='Category' domain="[]" context="{'group_by': 'category_id'}"/>
+                        <filter string='Responsible' domain="[]" context="{'group_by': 'brand_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_onboarding_mastereq" model="ir.actions.act_window">
+            <field name="name">Master Equipment</field>
+            <field name="res_model">onboarding.equipment.mastereq</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create"></p>
+            </field>
+        </record>
+        <!-- category -->
+        <!--<record model="ir.ui.view" id="onboarding_category_form"><field name="name">categoryeq.form</field><field name="model">onboarding.categoryeq</field><field name="arch" type="xml"><form string="Category Form"><sheet><group><group string="Category Infomation"><field name="name"/></group><notebook><page string="Description"><field name="description"/></page></notebook></group></sheet></form></field></record>-->
+        <!--<record model="ir.actions.act_window" id="action_onboarding_category"><field name="name">Category</field><field name="res_model">onboarding.categoryeq</field><field name="view_type">form</field><field name="view_mode">tree,form</field><field name="help" type="html"><p class="oe_view_nocontent_create">Create items</p></field></record>-->
+        <!--<record id="onboarding_mastereq_categoryeq_form" model="ir.ui.view">
+            <field name="name">mastereq.form</field>
+            <field name="model">onboarding.equipment.categoryeq</field>
+            <field name="arch" type="xml">
+                <form string="Equipments">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>-->
+        <!--<record id="onboarding_mastereq_categoryeq_tree" model="ir.ui.view">
+            <field name="name">onboarding.mastereq.categoryeq_tree</field>
+            <field name="model">onboarding.equipment.categoryeq</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="onboarding_mastereq_categoryeq_search" model="ir.ui.view">
+            <field name="name">onboarding.mastereq.categoryeq_search</field>
+            <field name="model">onboarding.equipment.categoryeq</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>-->
+        <record id="action_onboarding_category" model="ir.actions.act_window">
+            <field name="name">Category</field>
+            <field name="res_model">maintenance.equipment.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create items</p>
+            </field>
+        </record>
+    </data>
+</odoo>

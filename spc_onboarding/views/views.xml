@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--<menuitem id="menu_onboarding" name="On Boarding" parent="hr.menu_hr_root" sequence="100" groups="base.group_user"/>-->
+
+        <!--<menuitem id="menu_event" name="Event Onboarding" parent="hr.menu_hr_root" sequence="70"/>-->
+        <!--<menuitem id="menu_onboarding_event" parent="menu_event" action="action_onboarding_event" groups="base.group_user" sequence="1"/>-->
+        <!--<menuitem id="menu_onboarding_calendar" name="Calendar" parent="menu_event" action="calendar.action_calendar_event" sequence="2"/>-->
+        <menuitem id="menu_equipment" name="Equipment Onboarding" parent="hr.menu_hr_root" sequence="99"/>
+        <menuitem id="menu_onboarding_equipment" parent="menu_equipment" action="action_onboarding_equipment" groups="base.group_user"/>
+        <menuitem id="menu_onboarding_mastereq" parent="menu_equipment" action="action_onboarding_mastereq" groups="base.group_user"/>
+        <menuitem id="menu_onboarding_category" parent="menu_equipment" action="action_onboarding_category" groups="base.group_user"/>
+    </data>
+</odoo>
