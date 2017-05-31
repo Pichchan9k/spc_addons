@@ -5,7 +5,6 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-<<<<<<< HEAD
                 <xpath expr="/form/sheet/div[2]" position="replace">
                     <group>
                         <field name="name" placeholder="Employee's Name" invisible='1'/>
@@ -85,41 +84,6 @@
                                 <field name="birthday"/>
                             </group>
                         </group>
-                        <!-- education -->
-                        <!--<group string="Education Background" name="education">
-                            <group>
-                                <field name="primary_school"/>
-                                <field name="secondary_school"/>
-                                <field name="high_school"/>
-                            </group>
-=======
-                <xpath expr="//form" position="replace">
-                    <form string="Employee">
-                        <sheet>
-                            <div class="oe_button_box" name="button_box">
-                                <button name="toggle_active" type="object" groups="hr.group_hr_user" class="oe_stat_button" icon="fa-archive">
-                                    <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-                                </button>
-                            </div>
-                            <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
->>>>>>> 105c06ff6e8b8ecfe6c9bb8d9d4e4df0e7391e77
-                            <group>
-                                <field name="name" placeholder="Employee's Name" invisible='1'/>
-                                <field name="employee_number"/>
-                            </group>
-                            <group>
-                                <field name="title_id"/>
-                                <field name="title_en" invisible='1'/>
-                                <field name="title_th" invisible='1'/>
-                            </group>
-                            <group col="3" colspan="2">
-                                <field name="first_name_en" placeholder="First Name" string="FullName"/>
-                                <field name="last_name_en" placeholder="Last Name" nolabel='1'/>
-                                <field name="first_name_th" placeholder="ชื่อ" string="ชื่อ - นามสกุล"/>
-                                <field name="last_name_th" placeholder="นามสกุล" nolabel='1'/>
-                            </group>
-<<<<<<< HEAD
-                        </group>-->
                         <group string="Education Background" name="employment">
                             <field name="education" nolabel='1'>
                                 <tree string='Background' editable="bottom">
@@ -198,7 +162,6 @@
                 <xpath expr="//page[@name='personal_information']" position="replace">
                     <page name="personal_information" string="Personal Information" groups="hr.group_hr_user">                  
                     </page>
-=======
                             <notebook>
                                 <page name="public" string="Public Information">
                                     <group string="Position">
@@ -355,7 +318,7 @@
                             <field name="message_ids" widget="mail_thread"/>
                         </div>
                     </form>
->>>>>>> 105c06ff6e8b8ecfe6c9bb8d9d4e4df0e7391e77
+
                 </xpath>
             </field>
         </record>
