@@ -20,11 +20,12 @@ class onboarding_mastereq(models.Model):
     name = fields.Char(string="Equipment Name", required=True)
     category_id = fields.Many2one('maintenance.equipment.category', required=True)
     brand_id = fields.Many2one('onboarding.equipment.brand', required=False)
-    description = fields.Text(string='Description')
-    responsible_id = fields.Many2one('hr.position', string='Responsible', required=True)
+    department_id = fields.Many2one('hr.department', string='Department', required=True)
+    position_id = fields.Many2one('hr.position', string='Position', required=True)
     assign_date = fields.Date(string='Assign Date')
     end_waranty_date = fields.Date(string='End Waranty')
     distributor = fields.Char(string='Distributor')
+    description = fields.Text(string='Description')
 
 class Onboarding_equipment(models.Model):
     _name = 'onboarding.equipment'
@@ -54,15 +55,6 @@ class Onboarding_equipment(models.Model):
 class Maintenance_equipment(models.Model):
     _inherit = 'maintenance.equipment'
 
-    owner_user_id = fields.Many2one('hr.employee', string='Owner', track_visibility='onchange')
-    responsible_id = fields.Many2one('hr.position', string='Responsible')
-    equipment_onboarding_id = fields.Many2many('onboarding.equipment', string='OnBoarding')
-    state = fields.Selection([
-        ('draft', "Draft"),
-        ('process', "Confirmed"),
-        ('done', "Done"),
-    ], default='draft')
-
     @api.multi
     def action_draft(self):
         self.state = 'draft'
@@ -74,6 +66,16 @@ class Maintenance_equipment(models.Model):
     @api.multi
     def action_done(self):
         self.state = 'done'
+
+    owner_user_id = fields.Many2one('hr.employee', string='Owner', track_visibility='onchange')
+    responsible_id = fields.Many2one('hr.position', string='Responsible')
+    equipment_onboarding_id = fields.Many2many('onboarding.equipment', string='OnBoarding')
+    state = fields.Selection([
+        ('draft', "Draft"),
+        ('process', "Confirmed"),
+        ('done', "Done"),
+    ], default='draft')
+
 
 class Employee_equipment(models.Model):
     _inherit = 'hr.employee'
