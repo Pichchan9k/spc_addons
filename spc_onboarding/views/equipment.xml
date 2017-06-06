@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!--<record id="onboarding_equipment_inherit" model="ir.ui.view">
-            <field name="name">hr.employee.form_equipment_inherit</field>
-            <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="spc_employee.hr_employee_inherit"/>
+        <!--<record id="onboarding_equipment_inherit" model="ir.ui.view"><field name="name">hr.employee.form_equipment_inherit</field><field name="model">hr.employee</field><field name="inherit_id" ref="spc_employee.hr_employee_inherit"/><field name="arch" type="xml"><xpath expr="//group[@name='citizenship']" position="after"><group><field name="equipment_onboarding_id"/></group></xpath></field></record>-->
+        <record id="maintenance_tree_inherit" model="ir.ui.view">
+            <field name="name">maintenance.equipment.tree_inherit</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='citizenship']" position="after">
-                    <group>
-                        <field name="equipment_onboarding_id"/>
-                    </group>
+                <xpath expr="//tree" position="replace">
+                    <tree>
+                        <field name="name"/>
+                        <field name="category_id"/>
+                        <field name="serial_no"/>
+                        <field name="assign_date" />
+                        <field name="owner_user_id"/>
+                    </tree>
                 </xpath>
             </field>
-        </record>-->
+        </record>
         <record id="hr_equipment_view_form_inherit" model="ir.ui.view">
             <field name="name">equipment.form_inherit</field>
             <field name="model">maintenance.equipment</field>
@@ -27,11 +32,7 @@
                             <field name="state" widget="statusbar"/>
                         </header>
                         <sheet>
-                            <!--<div class="oe_button_box" name="button_box">
-                                <button name="121" type="action" class="oe_stat_button" icon="fa-ticket">
-                                    <field string="Maintenance" name="maintenance_count" widget="statinfo"/>
-                                </button>
-                            </div>-->
+                            <!--<div class="oe_button_box" name="button_box"><button name="121" type="action" class="oe_stat_button" icon="fa-ticket"><field string="Maintenance" name="maintenance_count" widget="statinfo"/></button></div>-->
                             <div class="oe_title">
                                 <label for="name" class="oe_edit_only"/>
                                 <h1>
@@ -52,19 +53,20 @@
                                 </group>
                             </group>
                             <notebook>
-                                <!--<page string="Description">
-                                <field name="note"/></page>-->
+                                <!--<page string="Description"><field name="note"/></page>-->
                                 <page string="Product Information">
                                     <group>
                                         <group>
-                                            <field name="partner_id"/>
-                                            <field name="partner_ref"/>
+                                            <field name="brand_id"/>
                                             <field name="model"/>
                                             <field name="serial_no"/>
+                                            <field name="partner_id"/>
+                                            <field name="partner_ref"/>
                                         </group>
                                         <group>
                                             <field name="cost" groups="maintenance.group_equipment_manager"/>
-                                            <field name="warranty"/>
+                                            <field name="warranty" string='End of Warranty'/>
+                                            <field name="assign_date"/>
                                         </group>
                                     </group>
                                 </page>
@@ -74,11 +76,11 @@
                                             <field name="next_action_date" class="oe_read_only" string="Next Preventive Maintenance"/>
                                             <label for="period" string="Preventive Maintenance Frequency"/>
                                             <div class="o_row">
-                                                <field name="period"/> days                                                                                                                            
+                                                <field name="period"/> days                                                                                                                                                                        
                                             </div>
                                             <label for="maintenance_duration" string="Maintenance Duration"/>
                                             <div class="o_row">
-                                                <field name="maintenance_duration"/> hours                                                                                                                            
+                                                <field name="maintenance_duration"/> hours                                                                                                                                                                        
                                             </div>
                                         </group>
                                     </group>

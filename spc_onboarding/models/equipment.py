@@ -2,24 +2,11 @@
 
 from odoo import models, fields, api
 
-
-class onboarding_categoryeq(models.Model):
-    _name = 'onboarding.equipment.categoryeq'
-
-    name = fields.Char(string="Category Name", required=True)
-    description = fields.Text(string='Description')
-
-class brand(models.Model):
-    _name = 'onboarding.equipment.brand'
-
-    name = fields.Char(string='Brand', required=True)
-
 class onboarding_mastereq(models.Model):
     _name = 'onboarding.equipment.mastereq'
 
     name = fields.Char(string="Equipment Name", required=True)
     category_id = fields.Many2one('maintenance.equipment.category', required=True)
-    brand_id = fields.Many2one('onboarding.equipment.brand', required=False)
     department_id = fields.Many2one('hr.department', string='Department', required=True)
     position_id = fields.Many2one('hr.position', string='Position', required=True)
     assign_date = fields.Date(string='Assign Date')
@@ -52,6 +39,11 @@ class Onboarding_equipment(models.Model):
                             ('lv6', '6')], string='Level')
 
 
+class Brand(models.Model):
+    _name = 'maintenance.equipment.brand'
+
+    name = fields.Char(string='Brand', required=True)
+
 class Maintenance_equipment(models.Model):
     _inherit = 'maintenance.equipment'
 
@@ -70,9 +62,10 @@ class Maintenance_equipment(models.Model):
     owner_user_id = fields.Many2one('hr.employee', string='Owner', track_visibility='onchange')
     responsible_id = fields.Many2one('hr.position', string='Responsible')
     equipment_onboarding_id = fields.Many2many('onboarding.equipment', string='OnBoarding')
+    brand_id = fields.Many2one('maintenance.equipment.brand', string='Brand')
     state = fields.Selection([
         ('draft', "Draft"),
-        ('process', "Confirmed"),
+        ('confirmed', "Confirmed"),
         ('done', "Done"),
     ], default='draft')
 
