@@ -19,6 +19,10 @@
                             </group>
                             <group col="4" colspan="2">
                                 <field name="employee_number" colspan='4'/>
+                                <field name="user"/>
+                                <field name="email"/>
+                            </group>
+                            <group col="4" colspan="2">
                                 <field name="title_id" colspan='4'/>
                                 <field name="first_name_en" placeholder="Name"/>
                                 <field name="last_name_en" placeholder="Surname"/>
@@ -27,16 +31,78 @@
                                 <field name="nick_name_en" placeholder="Nickname"/>
                                 <field name="nick_name_th" placeholder="Nickname Thai"/>
                             </group>
-                            <group>
-                                <field name="children_line">
-                                    <tree editable="bottom">
-                                        <field name="sex"/>
-                                        <field name="age"/>
-                                        <field name="education_level"/>
-                                    </tree>
-                                </field>
-                            </group>
-                            <group string="Address">
+                            <notebook>
+                                <page name="position" string="Position">
+                                    <group string="Position" col='4' colspan='2'>
+                                        <field name="department_id" colspan='4'/>
+                                        <field name="position_id"/>
+                                        <field name="chief_id"/>
+                                        <field name="level" />
+                                        <field name="parent_id"/>
+                                        <field name="sign_contact_date"/>
+                                        <field name="employee_type"/>
+                                        <field name="onboarding_date"/>
+                                        <field name="status"/>
+                                        <field name="probation_end_date"/>
+                                    </group>
+                                    <group string="Contact Information" invisible='1'>
+                                        <field name="address_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
+                                        <field name="mobile_phone"/>
+                                        <field name="work_location"/>
+                                        <field name="work_email" widget="email"/>
+                                        <field name="work_phone"/>
+                                    </group>
+                                </page>
+                                <page name="public" string="Public Information">
+                                    <group string="Citizenship &amp; Other Information" name="citizenship">
+                                        <group >
+                                            <field name="country_id" options='{"no_open": True, "no_create": True}'/>
+                                            <field name="race_id" options='{"no_open": True, "no_create": True}'/>
+                                            <field name="identification_id" groups="hr.group_hr_user" invisible='1'/>
+                                            <field name="citizen_id" groups="hr.group_hr_user"/>
+                                            <field name="gender"/>
+                                            <field name="passport_id" groups="hr.group_hr_user" invisible='1'/>
+                                            <field name="bank_account_id" context="{'default_partner_id': address_home_id}" invisible='1'/>
+                                        </group>
+                                        <group string="Contact Information" invisible='1'>
+                                            <field name="address_home_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
+                                        </group>
+                                        <group>
+                                            <field name="religion"/>
+                                            <field name="birthday"/>
+                                            <field name="marital"/>
+                                        </group>
+                                    </group>
+                                    <group >
+                                        <group col='4' colspan='2'>
+                                            <field name="personal_disease"/>
+                                            <field name="allergy"/>
+                                            <field name="blood_group"/>
+                                        </group>
+                                    </group>                                    
+                                    <group string="Social Information" name="social">
+                                        <group col='4' colspan='2'>
+                                            <field name="social_line"/>
+                                            <field name="social_facebook"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="children_line">
+                                            <tree editable="bottom">
+                                                <field name="sex"/>
+                                                <field name="birth_date"/>
+                                                <field name="age"/>
+                                                <field name="education_level"/>
+                                            </tree>
+                                        </field>
+                                        <field name='tel_line'>
+                                            <tree editable="bottom">
+                                                <field name='tel_type'/>
+                                                <field name='name'/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                    <group string="Address">
                                         <field name='address_line' nolabel='1'>
                                             <tree string='Address' editable="bottom">
                                                 <field name='address_type'/>
@@ -48,33 +114,11 @@
                                             </tree>
                                         </field>
                                     </group>
-                                    <group string="Citizenship &amp; Other Information" name="citizenship">
-                                        <group >
-                                            <field name="country_id" options='{"no_open": True, "no_create": True}'/>
-                                            <field name="identification_id" groups="hr.group_hr_user" invisible='1'/>
-                                            <field name="citizen_id" groups="hr.group_hr_user"/>
-                                            <field name="gender"/>
-                                            <field name="marital"/>
-                                            <field name="passport_id" groups="hr.group_hr_user" invisible='1'/>
-                                            <field name="bank_account_id" context="{'default_partner_id': address_home_id}" invisible='1'/>
-                                        </group>
-                                        <group string="Contact Information" invisible='1'>
-                                            <field name="address_home_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
-                                        </group>
-                                        <group>
-                                            <field name="religion"/>
-                                            <field name="blood_group"/>
-                                            <field name="birthday"/>
-                                        </group>
-                                        <group string="Birth" invisible='1'>
-                                            <field name="birthday"/>
-                                        </group>
-                                    </group>
                                     <!-- education -->
                                     <group string="Education Background" name="employment">
                                         <field name="education" nolabel='1'>
                                             <tree string='Background' editable="bottom">
-                                                <field name="level_of_education"/>
+                                                <field name="name"/>
                                                 <field name="institute"/>
                                                 <field name="institute_type"/>
                                                 <field name="major"/>
@@ -91,9 +135,19 @@
                                         <field name="studying_year_of_end"/>
                                     </group>
                                     <!-- langauge skill -->
-                                    <group string="Langauge Profiency" name="language_employee">
-                                        <field name="language_skill" nolabel='1'>
-                                            <tree string="Language" editable="bottom">
+                                    <group >
+                                        <field name="training_line">
+                                            <tree editable="bottom">
+                                                <field name="name"/>
+                                                <field name="institute"/>
+                                                <field name="period"/>
+                                                <field name="date"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                    <group name="language_employee">
+                                        <field name="language_skill">
+                                            <tree editable="bottom">
                                                 <field name="name"/>
                                                 <field name="speak"/>
                                                 <field name="read"/>
@@ -103,17 +157,15 @@
                                     </group>
                                     <!-- Special Skill -->
                                     <group string="Special Skills" name="special_skills" col="4" colspan="2">
-                                        <!--<group name="com_type" >-->
-                                            <field name="thai_typing"/>
-                                            <field name="eng_typing"/>
-                                            <field name="computer_program" colspan="4"/>
-                                        <!--</group>-->
-                                        <!--<group name="transport_license">-->
-                                            <field name="bike_license_type_id"/>
-                                            <field name="bile_license_number"/>
-                                            <field name="car_license_type_id"/>
-                                            <field name="car_license_number"/>
-                                        <!--</group>-->
+                                        <field name="thai_typing"/>
+                                        <field name="eng_typing"/>
+                                        <field name="computer_program" colspan="4"/>
+                                    </group>
+                                    <group string="Driver License" name="transport_license" col="4" colspan="2">
+                                        <field name="bike_license_type_id"/>
+                                        <field name="bile_license_number"/>
+                                        <field name="car_license_type_id"/>
+                                        <field name="car_license_number"/>
                                     </group>
                                     <!-- Employment record -->
                                     <group string="Employment Record" name="employment_record">
@@ -134,9 +186,9 @@
                                     </group>
                                     <group col="4" colspan="2">
                                         <field name="work_shift" />
-                                        <field name="reason_for_shift" attrs="{'readonly': [('work_shift', '=', 'yes')],'required': [('work_shift', '=', 'no')]}"/>
+                                        <field name="reason_for_shift" attrs="{'required': [('work_shift', '=', 'no')]}"/>
                                         <field name="travel" />
-                                        <field name="reason_travel" attrs="{'readonly': [('travel', '=', 'yes')],'required': [('travel', '=', 'no')]}" />
+                                        <field name="reason_travel" attrs="{'required': [('travel', '=', 'no')]}" />
                                     </group>
                                     <!-- ref -->
                                     <group string="References Person" name="reference_record">
@@ -151,33 +203,6 @@
                                             </tree>
                                         </field>
                                     </group>
-                            <notebook>
-                                <page name="public" string="Public Information">
-                                    <group string="Position">
-                                        <group>
-                                            <field name="department_id"/>
-                                            <field name="position_id"/>
-                                            <field name="level" />
-                                            <field name="chief_id"/>
-                                            <field name="parent_id"/>
-                                        </group>
-                                        <group>
-                                            <field name="sign_contact_date"/>
-                                            <field name="onboarding_date"/>
-                                            <field name="probation_end_date"/>
-                                            <field name="employee_type"/>
-                                            <field name="status"/>
-                                        </group>
-                                    </group>
-                                    <group string="Contact Information" invisible='1'>
-                                        <field name="address_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
-                                        <field name="mobile_phone"/>
-                                        <field name="work_location"/>
-                                        <field name="work_email" widget="email"/>
-                                        <field name="work_phone"/>
-                                    </group>
-                                    
-                                    <field name="notes" placeholder="Other Information ..." colspan="4"/>
                                 </page>
                                 <page name="personal_information" string="Personal Information" groups="hr.group_hr_user" invisible='1'/>
                                 <page name="hr_settings" string="HR Settings" groups="hr.group_hr_user">
@@ -189,6 +214,7 @@
                                     </group>
                                 </page>
                             </notebook>
+                            <field name="notes" placeholder="Other Information ..." colspan="4"/>
                         </sheet>
                         <div class="oe_chatter">
                             <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>

@@ -72,7 +72,7 @@ class Maintenance_equipment(models.Model):
     equipment_onboarding_id = fields.Many2many('onboarding.equipment', string='OnBoarding')
     state = fields.Selection([
         ('draft', "Draft"),
-        ('process', "Confirmed"),
+        ('confirmed', "Confirmed"),
         ('done', "Done"),
     ], default='draft')
 
