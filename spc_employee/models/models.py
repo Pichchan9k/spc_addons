@@ -259,14 +259,15 @@ class Employee(models.Model):
 
     @api.onchange('citizen_id')
     def checkCID(self):
-        print '----------------suwat'
-        self.citizen_id = cid
+        cid = self.citizen_id
+        print (cid)
         if(len(cid) != 13): 
             return {
                 'warning': {
                     'title': "Incorrect CitizenID",
                     'message': "Please Input CitizenID 13 number ",
                 },
+                }
         
         for char in cid:
             if char.isdigit()==False:
@@ -276,9 +277,9 @@ class Employee(models.Model):
                     'title': "Incorrect CitizenID",
                     'message': "Please Input only number ",
                 },
-
+                }
         num=0
-        num2=13 
+        num2 = 13 
         ciddata=list(cid)
         sum=0
         while num<12:
@@ -293,9 +294,14 @@ class Employee(models.Model):
             digit13=11-digit13
         if digit13==int(ciddata[12]):
             print('correct')
-            return True
+            # return True
         else:
-            return False
+             return {
+                'warning': {
+                    'title': "Incorrect CitizenID",
+                    'message': "Please Input Real Citizen ID ",
+                },
+                }
 
 
 
@@ -323,7 +329,7 @@ class Employee(models.Model):
     chief_id = fields.Many2one('hr.employee', string='Chief')
     employee_type = fields.Many2one('hr.employee.type', string='Employee Type')
     status = fields.Many2one('hr.employee.status', string='Status')
-    blood_group = fields.Char('Blood Group')
+    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group')
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     citizen_id = fields.Char('CitizenID', size=13)
     onboarding_date = fields.Date('Onboarding Date')
