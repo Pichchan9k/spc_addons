@@ -111,23 +111,20 @@ class Address(models.Model):
     phone_number = fields.Integer('Phone Number')
     address_id = fields.Many2one('hr.employee', string='Address Reference', index=True, required=False, ondelete='cascade')
 
-class LangaugeNumber(models.Model):
-    _name = 'spc.language.name'
-        
-    name = fields.Char(string='Language')
-
 class LanguageSkill(models.Model):
     _name = 'spc.language.skill'
+
+    def languagename(self):
+        return [('english','English'),('chinese','Chinese'),('japanese','Japanese'),('bahasa_malay','Bahasa Malay'),('khmer','Khmer'),('vietnamese','Vietnamese'),('lao','Lao'),('burmese','Burmese')]
 
     def level(self):
         return [('fair','Fair'),('good','Good'),('excellent','Excellent')]
 
-    name = fields.Many2one('spc.language.name', string='Language')
+    name = fields.Selection(languagename, string='Language')
     speak = fields.Selection(level, string='Speak')
     read = fields.Selection(level, string='Read')
     write = fields.Selection(level, string='Write')
-    ref_id = fields.Many2one('hr.employee', string='Language skil Reference', index=True, required=False, ondelete='cascade')
-
+  
 
 class Institue(models.Model):
     _name = 'spc.institute'
@@ -228,9 +225,35 @@ class Employee(models.Model):
         self.title_en = self.title_id.name
         self.title_th = self.title_id.name_th
 
+    # @api.onchange('citized_id')
+    # def on_chan_cid(self):
+    #     print 'onchange title', self
+
     @api.onchange('citized_id')
-    def on_chan_cid(self):
+    def checkCID(self):
         print 'onchange title', self
+        if(len(self) != 13): 
+            return False
+        num=0
+        num2=13 
+        listdata=list(self)
+        sum=0
+        while num<12:
+            sum+=int(listdata[num])*(num2-num)
+            num+=1
+        digit13 = sum%11
+        if digit13==0:
+            digit13=1
+        elif digit13==1:
+            digit13=0
+        else:
+            digit13=11-digit13
+        if digit13==int(listdata[12]):
+            return True
+        else:
+            return False
+
+
 
     @api.onchange('first_name_en', 'last_name_en')
     def some(self):
@@ -273,7 +296,7 @@ class Employee(models.Model):
     social_activity = fields.Char(string='Social Activity')
 
     #language skills
-    language_skill = fields.One2many('spc.language.skill', 'ref_id', string='Langauge')
+    language_skill = fields.One2many('spc.language.skill', 'id', string='Langauge')
 
     #special_skills
     thai_typing = fields.Integer(string='Thai word/minute')
