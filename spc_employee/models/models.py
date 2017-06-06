@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
-from datetime import datetime
+from datetime import timedelta
 
 import sys
 import os
@@ -130,7 +130,7 @@ class LanguageSkill(models.Model):
     speak = fields.Selection(level, string='Speak')
     read = fields.Selection(level, string='Read')
     write = fields.Selection(level, string='Write')
-    langageskill_id = fields.Many2one('hr.employee', string='Language skil Reference', required=False, ondelete='cascade')
+  
 
 class Institue(models.Model):
     _name = 'spc.institute'
@@ -219,17 +219,11 @@ class References(models.Model):
 class Children(models.Model):
     _name = 'hr.employee.children'
 
-    def child_age(self):
-        now_year = datetime.now().strftime("%Y")
-        for record in self:
-            year_of_birthday = record.birth_date[:4]
-            record.age = int(now_year) - int(year_of_birthday)
-
-    name = fields.Char('Name')
+    name = fields.Char('Name', required=True)
     sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', required=True)
     birth_date = fields.Date(string='Date of Birth', required=True)
-    age = fields.Char('Age', compute=child_age)
-    education_level = fields.Selection(EducationLevel().get_education_level(), string='Education Level', required=True)
+    age = fields.Char('Age')
+    education_level = fields.Char('Education Level', required=True)
     children_id = fields.Many2one('hr.employee', string='Children Ref', index=True, required=False, ondelete='cascade')
 
 class TelephoneType(models.Model):
@@ -244,18 +238,6 @@ class Telephone(models.Model):
     name = fields.Char('Number', required=True)
     tel_type = fields.Many2one('spc.telephone.type', string='Type', required=True)
     tel_id = fields.Many2one('hr.employee', string='Telephone Ref', index=True, required=False, ondelete='cascade')
-
-class Lskill(models.Model):
-    _name = 'spc.lskill'
-
-    def level(self):
-        return [('fair','Fair')]
-
-    name = fields.Many2one('spc.language.name', string='Language')
-    speak = fields.Selection(level, string='Speak')
-    read = fields.Selection(level, string='Read')
-    write = fields.Selection(level, string='Write')
-    lskill_id = fields.Many2one('hr.employee', string='Language skil Reference', required=False, ondelete='cascade')
 
 class Employee(models.Model):
     _inherit = 'hr.employee'
@@ -274,7 +256,7 @@ class Employee(models.Model):
     # @api.onchange('citized_id')
     # def on_chan_cid(self):
     #     print 'onchange title', self
-
+    @api.constrants
     @api.onchange('citizen_id')
     def checkCID(self):
         cid = self.citizen_id
@@ -324,39 +306,15 @@ class Employee(models.Model):
 
 
     @api.onchange('first_name_en', 'last_name_en')
-    def name_en(self):
+    def some(self):
         self.name = '%s %s' % (self.first_name_en, self.last_name_en)
         if self.first_name_en is not False and self.last_name_en is not False:
             email = '%s.%s' % (self.first_name_en, self.last_name_en[0][:1])
             self.user = email.lower()
 
-    @api.onchange('first_name_th', 'last_name_th')
-    def name_th(self):
-        self.name_th = '%s %s' % (self.first_name_th, self.last_name_th)
 
-    def employee_age(self):
-        now_year = datetime.now().strftime("%Y")
-        for record in self:
-            year_of_birthday = record.birthday[:4]
-            record.age = int(now_year) - int(year_of_birthday)
-            
-    def employee_duration(self):
-        print 'employee duration'
-        now_year = datetime.now().strftime("%Y")
-        now_month = datetime.now().strftime("%m")
-        for record in self:
-            year_of_start = record.start_date[:4]
-            year_of_dulation = int(now_year) - int(year_of_start)
-            
-            month_of_start = record.start_date[5:][:2]
-            mounth_of_duration = int(now_month) - int(month_of_start)
-
-            record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
-            print record.duration_of_employment
-
-    name_th = fields.Char('Name Thai')
     user = fields.Char('Username', readonly=False, required=True)
-    email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')] ,default='@sahapatco.th' ,string='Email', required=True)
+    email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')],string='Email', required=True)
     title_id = fields.Many2one('hr.employee.title', string='Title', required=True)
     title_en = fields.Char('Title En', required=True)
     title_th = fields.Char('Title Th', required=True)
@@ -374,19 +332,17 @@ class Employee(models.Model):
     blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group')
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     citizen_id = fields.Char('CitizenID', size=13)
-    onboarding_date = fields.Date('Onboarding Date', required=True)
-    sign_contact_date = fields.Date('Signed Date', required=True)
-    start_date = fields.Date('Start Date', required=True)
+    onboarding_date = fields.Date('Onboarding Date')
+    sign_contact_date = fields.Date('Signed Date')
     probation_end_date = fields.Date('ProbationEnd Date')
+    start_date = fields.Date('Start Date')
     employee_number = fields.Char(string='Employee ID')
     social_line = fields.Char('Line Id')
     social_facebook = fields.Char('Facebook')
     personal_disease = fields.Char('Personal Disease')
     allergy = fields.Char('Allergy')
     race_id = fields.Many2one('res.country', string='Race')
-    age = fields.Integer('Age', compute=employee_age)
-    duration_of_employment = fields.Char('Duration of Employee', compute=employee_duration)
-
+# ]fdgdfsgds
     #telephone
     tel_line = fields.One2many('spc.telephone', 'tel_id', string='Telephone', copy=True)
 
@@ -409,9 +365,7 @@ class Employee(models.Model):
     training_line = fields.One2many('spc.training.course','training_id', string='Training Course')
 
     #language skills
-
-    l_skill_line = fields.One2many('spc.lskill', 'lskill_id', string='Langauge')
-    language_skill = fields.One2many('spc.language.skill', 'langageskill_id', string='Langauge')
+    language_skill = fields.One2many('spc.language.skill', 'id', string='Langauge')
 
     #special_skills
     thai_typing = fields.Integer(string='Thai word/minute')
