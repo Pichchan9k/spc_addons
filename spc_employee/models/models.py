@@ -257,17 +257,32 @@ class Employee(models.Model):
     # def on_chan_cid(self):
     #     print 'onchange title', self
 
-    @api.onchange('citized_id')
+    @api.onchange('citizen_id')
     def checkCID(self):
-        print 'onchange title', self
-        if(len(self) != 13): 
-            return False
+        print '----------------suwat'
+        self.citizen_id = cid
+        if(len(cid) != 13): 
+            return {
+                'warning': {
+                    'title': "Incorrect CitizenID",
+                    'message': "Please Input CitizenID 13 number ",
+                },
+        
+        for char in cid:
+            if char.isdigit()==False:
+                print("false")
+                return {
+                'warning': {
+                    'title': "Incorrect CitizenID",
+                    'message': "Please Input only number ",
+                },
+
         num=0
         num2=13 
-        listdata=list(self)
+        ciddata=list(cid)
         sum=0
         while num<12:
-            sum+=int(listdata[num])*(num2-num)
+            sum+=int(ciddata[num])*(num2-num)
             num+=1
         digit13 = sum%11
         if digit13==0:
@@ -276,7 +291,8 @@ class Employee(models.Model):
             digit13=0
         else:
             digit13=11-digit13
-        if digit13==int(listdata[12]):
+        if digit13==int(ciddata[12]):
+            print('correct')
             return True
         else:
             return False
@@ -339,7 +355,7 @@ class Employee(models.Model):
     institute_activity = fields.Char(string='Activity in The Institute')
     social_activity = fields.Char(string='Social Activity')
 
-    #training course
+   #training course
     training_line = fields.One2many('spc.training.course','training_id', string='Training Course')
 
     #language skills
@@ -361,14 +377,18 @@ class Employee(models.Model):
     work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?', required=True)
     reason_for_shift = fields.Char('Reason')
     travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?', required=True)
-    reason_travel = fields.Char(string='Reason') 
+    reason_travel = fields.Char(string='Reason')
+    work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?')
+    reason_for_shift = fields.Char('Reason', readonly=True)
+    travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?')
+    reason_travel = fields.Char(string='Reason', readonly=True) 
 
     # References
-    # recommend_by = fields.Char('Recommend By')
-    # recommend_relationship = fields.Char('Relationship')
-    # recommend_company = fields.Char("Company's Name")    
-    # recommend_position = fields.Char('Posiion')
-    # recommend_tel = fields.Integer('Tel.')
+    recommend_by = fields.Char('Recommend By')
+    recommend_relationship = fields.Char('Relationship')
+    recommend_company = fields.Char("Company's Name")    
+    recommend_position = fields.Char('Posiion')
+    recommend_tel = fields.Integer('Tel.')
     references_line = fields.One2many('hr.employee.ref','ref_id', string='References')
 
 
@@ -384,6 +404,7 @@ class Employee(models.Model):
     #     # command = 'python /home/pichchanok/Desktop/odoo10/spc_addons/spc_api/activiti.py ' + str(employee.id)
     #     # os.system(command)
     #     return employee
+    # dsfsa
 
     def api(self):
         print 'try_api', self
