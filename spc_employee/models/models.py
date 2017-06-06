@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
-from datetime import datetime
+from datetime import timedelta
 
 import sys
 import os
@@ -130,16 +130,7 @@ class LanguageSkill(models.Model):
     speak = fields.Selection(level, string='Speak')
     read = fields.Selection(level, string='Read')
     write = fields.Selection(level, string='Write')
-<<<<<<< HEAD
-<<<<<<< HEAD
     langageskill_id = fields.Many2one('hr.employee', string='Language skil Reference', required=False, ondelete='cascade')
-
-=======
-  
->>>>>>> 5d204cc3355e69230450df15a9f6d5d998729053
-=======
-  
->>>>>>> 5d204cc3355e69230450df15a9f6d5d998729053
 
 class Institue(models.Model):
     _name = 'spc.institute'
@@ -418,16 +409,9 @@ class Employee(models.Model):
     training_line = fields.One2many('spc.training.course','training_id', string='Training Course')
 
     #language skills
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     l_skill_line = fields.One2many('spc.lskill', 'lskill_id', string='Langauge')
     language_skill = fields.One2many('spc.language.skill', 'langageskill_id', string='Langauge')
-=======
-    language_skill = fields.One2many('spc.language.skill', 'id', string='Langauge')
->>>>>>> 5d204cc3355e69230450df15a9f6d5d998729053
-=======
-    language_skill = fields.One2many('spc.language.skill', 'id', string='Langauge')
->>>>>>> 5d204cc3355e69230450df15a9f6d5d998729053
 
     #special_skills
     thai_typing = fields.Integer(string='Thai word/minute')
