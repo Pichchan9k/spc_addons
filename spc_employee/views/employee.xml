@@ -46,7 +46,7 @@
                         <filter string='Department' domain="[]" context="{'group_by': 'department_id'}"/>
                         <filter string='Level' domain="[]" context="{'group_by': 'level'}"/>
                         <filter string='Duration of employment' domain="[]" context="{'group_by': 'duration_of_employment'}"/>
-                        <filter string='Age' domain="[]" context="{'group_by': 'age'}"/>
+                        <filter string='อายุ' domain="[]" context="{'group_by': 'age'}"/>
                     </group>
                 </search>
             </field>
