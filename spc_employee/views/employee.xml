@@ -21,6 +21,36 @@
                 </xpath>
             </field>
         </record>
+        <record id="hr_employee__view_search" model="ir.ui.view">
+            <field name="name">hr.employee.search</field>
+            <field name="model">hr.employee</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="employee_number"/>
+                        <field name="employee_number"/>
+                        <field name="name"/>
+                        <field name="name_th" invisible='1'/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="department_id"/>
+                        <field name="position_id"/>
+                        <field name="level"/>
+                        <field name="duration_of_employment"/>
+                        <field name="age" />
+                        <field name="message_needaction" invisible="1"/>
+                    <group expand='0' string='Group by...'>
+                        <filter string='Equipment' domain="[]" context="{'group_by': 'employee_number'}"/>
+                        <filter string='Name' domain="[]" context="{'group_by': 'name'}"/>
+                        <filter string='Thai Name' domain="[]" context="{'group_by': 'name_th'}"/>
+                        <filter string='ComapnyID' domain="[]" context="{'group_by': 'department_id'}"/>
+                        <filter string='Position' domain="[]" context="{'group_by': 'position_id'}"/>
+                        <filter string='Department' domain="[]" context="{'group_by': 'department_id'}"/>
+                        <filter string='Level' domain="[]" context="{'group_by': 'level'}"/>
+                        <filter string='Duration of employment' domain="[]" context="{'group_by': 'duration_of_employment'}"/>
+                        <filter string='Age' domain="[]" context="{'group_by': 'age'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
         <record id="hr_employee_inherit" model="ir.ui.view">
             <field name="name">hr.employee.form_inherit</field>
             <field name="model">hr.employee</field>
