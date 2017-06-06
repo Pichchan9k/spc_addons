@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
-from datetime import timedelta
+from datetime import datetime
 
 import sys
 import os
@@ -132,6 +132,7 @@ class LanguageSkill(models.Model):
     write = fields.Selection(level, string='Write')
   
 
+
 class Institue(models.Model):
     _name = 'spc.institute'
 
@@ -239,6 +240,18 @@ class Telephone(models.Model):
     tel_type = fields.Many2one('spc.telephone.type', string='Type', required=True)
     tel_id = fields.Many2one('hr.employee', string='Telephone Ref', index=True, required=False, ondelete='cascade')
 
+class Lskill(models.Model):
+    _name = 'spc.lskill'
+
+    def level(self):
+        return [('fair','Fair')]
+
+    name = fields.Many2one('spc.language.name', string='Language')
+    speak = fields.Selection(level, string='Speak')
+    read = fields.Selection(level, string='Read')
+    write = fields.Selection(level, string='Write')
+    lskill_id = fields.Many2one('hr.employee', string='Language skil Reference', required=False, ondelete='cascade')
+
 class Employee(models.Model):
     _inherit = 'hr.employee'
 
@@ -256,7 +269,7 @@ class Employee(models.Model):
     # @api.onchange('citized_id')
     # def on_chan_cid(self):
     #     print 'onchange title', self
-    @api.constrants
+    # @api.constrants
     @api.onchange('citizen_id')
     def checkCID(self):
         cid = self.citizen_id
@@ -312,7 +325,26 @@ class Employee(models.Model):
             email = '%s.%s' % (self.first_name_en, self.last_name_en[0][:1])
             self.user = email.lower()
 
+    def employee_age(self):
+        now_year = datetime.now().strftime("%Y")
+        for record in self:
+            year_of_birthday = record.birthday[:4]
+            record.age = int(now_year) - int(year_of_birthday)
+            
+    def employee_duration(self):
+        print 'employee duration'
+        now_year = datetime.now().strftime("%Y")
+        now_month = datetime.now().strftime("%m")
+        for record in self:
+            year_of_start = record.start_date[:4]
+            year_of_dulation = int(now_year) - int(year_of_start)
+            
+            month_of_start = record.start_date[5:][:2]
+            mounth_of_duration = int(now_month) - int(month_of_start)
 
+            record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
+            print record.duration_of_employment
+    name_th = fields.Char('Name Thai')
     user = fields.Char('Username', readonly=False, required=True)
     email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')],string='Email', required=True)
     title_id = fields.Many2one('hr.employee.title', string='Title', required=True)
@@ -342,6 +374,8 @@ class Employee(models.Model):
     personal_disease = fields.Char('Personal Disease')
     allergy = fields.Char('Allergy')
     race_id = fields.Many2one('res.country', string='Race')
+    age = fields.Integer('Age', compute=employee_age)
+    duration_of_employment = fields.Char('Duration of Employee', compute=employee_duration)
 # ]fdgdfsgds
     #telephone
     tel_line = fields.One2many('spc.telephone', 'tel_id', string='Telephone', copy=True)
@@ -351,8 +385,8 @@ class Employee(models.Model):
 
     #children
     children_line = fields.One2many('hr.employee.children', 'children_id', string='No. of Children', copy=True)
-
     # education background
+    # test
     education = fields.One2many('spc.employee.edu','education_id', string='Education Background')
     intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study')
     studying_at = fields.Many2one('spc.institute', string='Studying at')
@@ -365,6 +399,7 @@ class Employee(models.Model):
     training_line = fields.One2many('spc.training.course','training_id', string='Training Course')
 
     #language skills
+    l_skill_line = fields.One2many('spc.lskill', 'lskill_id', string='Langauge')
     language_skill = fields.One2many('spc.language.skill', 'id', string='Langauge')
 
     #special_skills
