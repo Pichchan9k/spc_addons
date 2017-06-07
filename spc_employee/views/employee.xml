@@ -159,10 +159,10 @@
                                             <tree string='Address' editable="bottom">
                                                 <field name='address_type'/>
                                                 <field name='addr1'/>
-                                                <field name='provice_id' />
-                                                <field name='district_id' />
-                                                <field name='subdistrict_id' />
-                                                <field name='zipcode_id'/>
+                                               <field name='subdistrict_id' />
+                                               <field name='district_id' />
+                                               <field name='provice_id' />
+                                               <field name='zipcode_id'/>
                                             </tree>
                                         </field>
                                     </group>
