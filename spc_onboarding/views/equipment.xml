@@ -159,7 +159,7 @@
             </field>
         </record>
         <!-- equiment draft -->
-        <record id="action_onboarding_mastereq_draft_form" model="ir.actions.act_window">
+        <record id="action_maintenance_equipment_draft_form" model="ir.actions.act_window">
             <field name="name">Draft / Confirmed</field>
             <field name="res_model">maintenance.equipment</field>
             <field name="view_type">form</field>
@@ -169,7 +169,24 @@
                 <p class="oe_view_nocontent_create">Create items</p>
             </field>
         </record>
-        <record id="action_onboarding_mastereq_done_form" model="ir.actions.act_window">
+                <!--search-->
+        <record id="action_maintenance_equipment_draft_search" model="ir.ui.view">
+            <field name="name">equipment.search</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name"/>
+                    <field name="equipment_onboarding_id"/>
+                    <field name="brand_id"/>
+                    <group expand='0' string='Group by...'>
+                        <filter string='Equipment' domain="[]" context="{'group_by': 'name'}"/>
+                        <filter string='OnBoarding' domain="[]" context="{'group_by': 'equipment_onboarding_id'}"/>
+                        <filter string='Brand' domain="[]" context="{'group_by': 'brand_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_maintenance_equipment_done_form" model="ir.actions.act_window">
             <field name="name">Done</field>
             <field name="res_model">maintenance.equipment</field>
             <field name="view_type">form</field>
@@ -179,6 +196,7 @@
                 <p class="oe_view_nocontent_create">Create items</p>
             </field>
         </record>
+
         <!--eq-->
         <record id="action_onboarding_mastereq_form" model="ir.ui.view">
             <field name="name">mastereq.form</field>
@@ -227,6 +245,7 @@
                         <filter string='Category' domain="[]" context="{'group_by': 'category_id'}"/>
                         <filter string='Department' domain="[]" context="{'group_by': 'department_id'}"/>
                         <filter string='Position' domain="[]" context="{'group_by': 'position_id'}"/>
+
                     </group>
                 </search>
             </field>
