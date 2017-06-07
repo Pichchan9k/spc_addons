@@ -111,7 +111,7 @@ class Address(models.Model):
     address_type = fields.Many2one('spc.address.type', string='Address Type')
     addr1 = fields.Char('Address')
     provice_id = fields.Many2one('spc.address.provice', string='Provice')
-    district_id = fields.Many2one('spc.address.district', string='District', domain=_get_district)
+    district_id = fields.Many2one('spc.address.district', string='District')
     subdistrict_id = fields.Many2one('spc.address.subdistrict', string='Subdistrict')
     zipcode_id = fields.Many2one('spc.address.zipcode', string='Zip Code')
     phone_number = fields.Integer('Phone Number')
