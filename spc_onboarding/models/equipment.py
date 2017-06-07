@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 
-class onboarding_mastereq(models.Model):
+class OnboardingMastereq(models.Model):
     _name = 'onboarding.equipment.mastereq'
 
     name = fields.Char(string="Equipment Name", required=True)
@@ -14,7 +14,7 @@ class onboarding_mastereq(models.Model):
     distributor = fields.Char(string='Distributor')
     description = fields.Text(string='Description')
 
-class Onboarding_equipment(models.Model):
+class OnboardingEquipment(models.Model):
     _name = 'onboarding.equipment'
 
     name = fields.Char(string='Name', required=True)
@@ -44,7 +44,7 @@ class Brand(models.Model):
 
     name = fields.Char(string='Brand', required=True)
 
-class Maintenance_equipment(models.Model):
+class MaintenanceEquipment(models.Model):
     _inherit = 'maintenance.equipment'
 
     @api.multi
@@ -69,8 +69,7 @@ class Maintenance_equipment(models.Model):
         ('done', "Done"),
     ], default='draft')
 
-
-class Employee_equipment(models.Model):
+class EmployeeEquipment(models.Model):
     _inherit = 'hr.employee'
 
     equipment_onboarding_id = fields.Many2many('maintenance.equipment', string="Equipment")

@@ -168,12 +168,12 @@
                                         </field>
                                     </group>
                                     <group name="language_employee">
-                                        <field name="l_skill_line">
+                                        <field name="language_skill">
                                             <tree editable="bottom">
                                                 <field name="name"/>
-                                                <field name="speak"/>
-                                                <field name="read"/>
-                                                <field name="write"/>
+                                                <field name="speak_skill"/>
+                                                <field name="read_skill"/>
+                                                <field name="write_skill"/>
                                             </tree>
                                         </field>
                                     </group>

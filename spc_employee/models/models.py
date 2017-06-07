@@ -111,26 +111,28 @@ class Address(models.Model):
     address_type = fields.Many2one('spc.address.type', string='Address Type')
     addr1 = fields.Char('Address')
     provice_id = fields.Many2one('spc.address.provice', string='Provice')
-    district_id = fields.Many2one('spc.address.district', string='District')
+    district_id = fields.Many2one('spc.address.district', string='District', domain=_get_district)
     subdistrict_id = fields.Many2one('spc.address.subdistrict', string='Subdistrict')
     zipcode_id = fields.Many2one('spc.address.zipcode', string='Zip Code')
     phone_number = fields.Integer('Phone Number')
     address_id = fields.Many2one('hr.employee', string='Address Reference', index=True, required=False, ondelete='cascade')
 
+class LangageSkillName(models.Model):
+    _name = 'spc.language.skill.name'
+
+    name = fields.Char('Lanugage Name', required=True)
+
 class LanguageSkill(models.Model):
     _name = 'spc.language.skill'
 
-    def languagename(self):
-        return [('english','English'),('chinese','Chinese'),('japanese','Japanese'),('bahasa_malay','Bahasa Malay'),('khmer','Khmer'),('vietnamese','Vietnamese'),('lao','Lao'),('burmese','Burmese')]
+    def get_language_skill(self):
+        return [('fair', 'Fair'), ('good', 'Good'), ('excellent', 'Excellent')]
 
-    def level(self):
-        return [('fair','Fair'),('good','Good'),('excellent','Excellent')]
-
-    name = fields.Selection(languagename, string='Language')
-    speak = fields.Selection(level, string='Speak')
-    read = fields.Selection(level, string='Read')
-    write = fields.Selection(level, string='Write')
-    langageskill_id = fields.Many2one('hr.employee', string='Language skil Reference', required=False, ondelete='cascade')
+    name = fields.Many2one('spc.language.skill.name', string='Language', required=True)
+    speak_skill = fields.Selection(get_language_skill, string='Speak', required=True)
+    read_skill = fields.Selection(get_language_skill, string='Read', required=True)
+    write_skill = fields.Selection(get_language_skill, string='Write', required=True)
+    languageskill_id = fields.Many2one('hr.employee', string='LanguageSkil Reference', index=True, required=False, ondelete='cascade')
 
 class Institue(models.Model):
     _name = 'spc.institute'
@@ -151,7 +153,7 @@ class Education(models.Model):
 
 class TrainingCourse(models.Model):
     _name = 'spc.training.course'
-    
+
     name = fields.Char('Items', required=True)
     institute = fields.Char('Institute', required=True)
     period = fields.Integer('Period', required=True)
@@ -185,7 +187,7 @@ class PastJob(models.Model):
 
     name = fields.Char(string='Company', required=True)
     company_address = fields.Char(string='Address', required=True)
-    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past','Past')], string='Type')
+    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past', 'Past')], string='Type')
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     first_position = fields.Char(string='First Position', required=True)
@@ -196,24 +198,24 @@ class PastJob(models.Model):
     pastjob_id = fields.Many2one('hr.employee', string='Pastjob Reference', index=True)
 
 class CarLicense(models.Model):
-    _name ='hr.employee.bikelicense'
+    _name = 'hr.employee.bikelicense'
 
-    name = fields.Char(string='Type')    
+    name = fields.Char(string='Type')
 
 class BikeLicense(models.Model):
-    _name ='hr.employee.carlicense'
+    _name = 'hr.employee.carlicense'
 
-    name = fields.Char(string='Type')         
+    name = fields.Char(string='Type')
 
 class References(models.Model):
     _name = 'hr.employee.ref'
 
     name = fields.Char(string='Name')
-    company = fields.Char(string ='Company')
-    relationship = fields.Char(string ='Relatonship')
-    ref_type = fields.Selection([('ref','References'),('saha_group','Saha Group'),('not_family','Not is family')], string ='Type')
-    postion = fields.Char(string ='Position')
-    tel = fields.Char(string ='Tel')
+    company = fields.Char(string='Company')
+    relationship = fields.Char(string='Relatonship')
+    ref_type = fields.Selection([('ref', 'References'), ('saha_group', 'Saha Group'), ('not_family', 'Not is family')], string='Type')
+    postion = fields.Char(string='Position')
+    tel = fields.Char(string='Tel')
     ref_id = fields.Many2one('hr.employee', string='Persons Reference', index=True)
 
 class Children(models.Model):
@@ -245,18 +247,6 @@ class Telephone(models.Model):
     tel_type = fields.Many2one('spc.telephone.type', string='Type', required=True)
     tel_id = fields.Many2one('hr.employee', string='Telephone Ref', index=True, required=False, ondelete='cascade')
 
-class Lskill(models.Model):
-    _name = 'spc.lskill'
-
-    def level(self):
-        return [('fair','Fair')]
-
-    name = fields.Many2one('spc.language.name', string='Language')
-    speak = fields.Selection(level, string='Speak')
-    read = fields.Selection(level, string='Read')
-    write = fields.Selection(level, string='Write')
-    lskill_id = fields.Many2one('hr.employee', string='Language skil Reference', required=False, ondelete='cascade')
-
 class Employee(models.Model):
     _inherit = 'hr.employee'
 
@@ -271,57 +261,50 @@ class Employee(models.Model):
         self.title_en = self.title_id.name
         self.title_th = self.title_id.name_th
 
-    # @api.onchange('citized_id')
-    # def on_chan_cid(self):
-    #     print 'onchange title', self
-
     @api.onchange('citizen_id')
     def checkCID(self):
         cid = self.citizen_id
-        print (cid)
-        if(len(cid) != 13): 
-            return {
-                'warning': {
-                    'title': "Incorrect CitizenID",
-                    'message': "Please Input CitizenID 13 number ",
-                },
-                }
-        
-        for char in cid:
-            if char.isdigit()==False:
-                print("false")
+        if (cid is not False):
+            if(len(cid) != 13):
                 return {
-                'warning': {
-                    'title': "Incorrect CitizenID",
-                    'message': "Please Input only number ",
-                },
-                }
-        num=0
-        num2 = 13 
-        ciddata=list(cid)
-        sum=0
-        while num<12:
-            sum+=int(ciddata[num])*(num2-num)
-            num+=1
-        digit13 = sum%11
-        if digit13==0:
-            digit13=1
-        elif digit13==1:
-            digit13=0
-        else:
-            digit13=11-digit13
-        if digit13==int(ciddata[12]):
-            print('correct')
-            # return True
-        else:
-             return {
-                'warning': {
-                    'title': "Incorrect CitizenID",
-                    'message': "Please Input Real Citizen ID ",
-                },
+                    'warning': {
+                        'title': "Incorrect CitizenID",
+                        'message': "Please Input CitizenID 13 number ",
+                    },
                 }
 
-
+            for char in cid:
+                if char.isdigit() is False:
+                    print("false")
+                    return {
+                        'warning': {
+                            'title': "Incorrect CitizenID",
+                            'message': "Please Input only number ",
+                        },
+                    }
+            num = 0
+            num2 = 13
+            ciddata = list(cid)
+            sum = 0
+            while num < 12:
+                sum += int(ciddata[num]) * (num2 - num)
+                num += 1
+            digit13 = sum % 11
+            if digit13 == 0:
+                digit13 = 1
+            elif digit13 == 1:
+                digit13 = 0
+            else:
+                digit13 = 11 - digit13
+            # if digit13 == int(ciddata[12]):
+                # return True
+            if digit13 == int(ciddata[12]):
+                return {
+                    'warning': {
+                        'title': "Incorrect CitizenID",
+                        'message': "Please Input Real Citizen ID ",
+                        },
+                    }
 
     @api.onchange('first_name_en', 'last_name_en')
     def name_en(self):
@@ -339,7 +322,7 @@ class Employee(models.Model):
         for record in self:
             year_of_birthday = record.birthday[:4]
             record.age = int(now_year) - int(year_of_birthday)
-            
+
     def employee_duration(self):
         print 'employee duration'
         now_year = datetime.now().strftime("%Y")
@@ -347,7 +330,7 @@ class Employee(models.Model):
         for record in self:
             year_of_start = record.start_date[:4]
             year_of_dulation = int(now_year) - int(year_of_start)
-            
+
             month_of_start = record.start_date[5:][:2]
             mounth_of_duration = int(now_month) - int(month_of_start)
 
@@ -356,7 +339,7 @@ class Employee(models.Model):
 
     name_th = fields.Char('Name Thai')
     user = fields.Char('Username', readonly=False, required=True)
-    email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')] ,default='@sahapatco.th' ,string='Email', required=True)
+    email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')], default='@sahapatco.th', string='Email', required=True)
     title_id = fields.Many2one('hr.employee.title', string='Title', required=True)
     title_en = fields.Char('Title En', required=True)
     title_th = fields.Char('Title Th', required=True)
@@ -397,7 +380,7 @@ class Employee(models.Model):
     children_line = fields.One2many('hr.employee.children', 'children_id', string='No. of Children', copy=True)
 
     # education background
-    education = fields.One2many('spc.employee.edu','education_id', string='Education Background')
+    education = fields.One2many('spc.employee.edu', 'education_id', string='Education Background')
     intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study')
     studying_at = fields.Many2one('spc.institute', string='Studying at')
     studying_major = fields.Char(string='Major')
@@ -405,13 +388,11 @@ class Employee(models.Model):
     institute_activity = fields.Char(string='Activity in The Institute')
     social_activity = fields.Char(string='Social Activity')
 
-   #training course
-    training_line = fields.One2many('spc.training.course','training_id', string='Training Course')
+    #training course
+    training_line = fields.One2many('spc.training.course', 'training_id', string='Training Course')
 
     #language skills
-
-    l_skill_line = fields.One2many('spc.lskill', 'lskill_id', string='Langauge')
-    language_skill = fields.One2many('spc.language.skill', 'langageskill_id', string='Langauge')
+    language_skill = fields.One2many('spc.language.skill', 'languageskill_id', string='Langauge')
 
     #special_skills
     thai_typing = fields.Integer(string='Thai word/minute')
@@ -423,7 +404,7 @@ class Employee(models.Model):
     car_license_number = fields.Char('Driver License No.')
 
     # employment record
-    past_job = fields.One2many('hr.employee.pastjob','pastjob_id', string='Record')
+    past_job = fields.One2many('hr.employee.pastjob', 'pastjob_id', string='Record')
 
     ever_worked_sahagroup = fields.Boolean(string="Have you ever working with SAHA GROUP?")
     work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?', required=True)
@@ -433,16 +414,10 @@ class Employee(models.Model):
     work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?')
     reason_for_shift = fields.Char('Reason', readonly=True)
     travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?')
-    reason_travel = fields.Char(string='Reason', readonly=True) 
+    reason_travel = fields.Char(string='Reason', readonly=True)
 
     # References
-    recommend_by = fields.Char('Recommend By')
-    recommend_relationship = fields.Char('Relationship')
-    recommend_company = fields.Char("Company's Name")    
-    recommend_position = fields.Char('Posiion')
-    recommend_tel = fields.Integer('Tel.')
-    references_line = fields.One2many('hr.employee.ref','ref_id', string='References')
-
+    references_line = fields.One2many('hr.employee.ref', 'ref_id', string='References')
 
     # @api.model
     # def create(self, vals):
@@ -458,6 +433,7 @@ class Employee(models.Model):
     #     return employee
     # dsfsa
 
+    # create send to ad > 4 param id, firstname lastname domain
     def api(self):
         print 'try_api', self
         print self.env['res.users'].search([])
