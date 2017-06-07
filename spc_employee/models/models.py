@@ -128,11 +128,21 @@ class LanguageSkill(models.Model):
     def get_language_skill(self):
         return [('fair', 'Fair'), ('good', 'Good'), ('excellent', 'Excellent')]
 
+<<<<<<< HEAD
     name = fields.Many2one('spc.language.skill.name', string='Language', required=True)
     speak_skill = fields.Selection(get_language_skill, string='Speak', required=True)
     read_skill = fields.Selection(get_language_skill, string='Read', required=True)
     write_skill = fields.Selection(get_language_skill, string='Write', required=True)
     languageskill_id = fields.Many2one('hr.employee', string='LanguageSkil Reference', index=True, required=False, ondelete='cascade')
+=======
+    name = fields.Selection(languagename, string='Language')
+    skill_speak = fields.Selection(level, string='Speak')
+    skill_read = fields.Selection(level, string='Read')
+    skill_write = fields.Selection(level, string='Write')
+    lskill_ref = fields.Many2one('hr.employee', index=True, required=False, ondelete='cascade')
+  
+
+>>>>>>> 0b95f99e93a2e5ad34d5cad0aab08bdc31016651
 
 class Institue(models.Model):
     _name = 'spc.institute'
@@ -221,17 +231,11 @@ class References(models.Model):
 class Children(models.Model):
     _name = 'hr.employee.children'
 
-    def child_age(self):
-        now_year = datetime.now().strftime("%Y")
-        for record in self:
-            year_of_birthday = record.birth_date[:4]
-            record.age = int(now_year) - int(year_of_birthday)
-
-    name = fields.Char('Name')
+    name = fields.Char('Name', required=True)
     sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', required=True)
     birth_date = fields.Date(string='Date of Birth', required=True)
-    age = fields.Char('Age', compute=child_age)
-    education_level = fields.Selection(EducationLevel().get_education_level(), string='Education Level', required=True)
+    age = fields.Char('Age')
+    education_level = fields.Char('Education Level', required=True)
     children_id = fields.Many2one('hr.employee', string='Children Ref', index=True, required=False, ondelete='cascade')
 
 class TelephoneType(models.Model):
@@ -261,6 +265,13 @@ class Employee(models.Model):
         self.title_en = self.title_id.name
         self.title_th = self.title_id.name_th
 
+<<<<<<< HEAD
+=======
+    # @api.onchange('citized_id')
+    # def on_chan_cid(self):
+    #     print 'onchange title', self
+    # @api.constrants
+>>>>>>> 0b95f99e93a2e5ad34d5cad0aab08bdc31016651
     @api.onchange('citizen_id')
     def checkCID(self):
         cid = self.citizen_id
@@ -307,15 +318,11 @@ class Employee(models.Model):
                     }
 
     @api.onchange('first_name_en', 'last_name_en')
-    def name_en(self):
+    def some(self):
         self.name = '%s %s' % (self.first_name_en, self.last_name_en)
         if self.first_name_en is not False and self.last_name_en is not False:
             email = '%s.%s' % (self.first_name_en, self.last_name_en[0][:1])
             self.user = email.lower()
-
-    @api.onchange('first_name_th', 'last_name_th')
-    def name_th(self):
-        self.name_th = '%s %s' % (self.first_name_th, self.last_name_th)
 
     def employee_age(self):
         now_year = datetime.now().strftime("%Y")
@@ -336,10 +343,13 @@ class Employee(models.Model):
 
             record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
             print record.duration_of_employment
-
     name_th = fields.Char('Name Thai')
     user = fields.Char('Username', readonly=False, required=True)
+<<<<<<< HEAD
     email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')], default='@sahapatco.th', string='Email', required=True)
+=======
+    email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')],string='Email', required=True)
+>>>>>>> 0b95f99e93a2e5ad34d5cad0aab08bdc31016651
     title_id = fields.Many2one('hr.employee.title', string='Title', required=True)
     title_en = fields.Char('Title En', required=True)
     title_th = fields.Char('Title Th', required=True)
@@ -357,10 +367,10 @@ class Employee(models.Model):
     blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group')
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     citizen_id = fields.Char('CitizenID', size=13)
-    onboarding_date = fields.Date('Onboarding Date', required=True)
-    sign_contact_date = fields.Date('Signed Date', required=True)
-    start_date = fields.Date('Start Date', required=True)
+    onboarding_date = fields.Date('Onboarding Date')
+    sign_contact_date = fields.Date('Signed Date')
     probation_end_date = fields.Date('ProbationEnd Date')
+    start_date = fields.Date('Start Date')
     employee_number = fields.Char(string='Employee ID')
     social_line = fields.Char('Line Id')
     social_facebook = fields.Char('Facebook')
@@ -369,7 +379,7 @@ class Employee(models.Model):
     race_id = fields.Many2one('res.country', string='Race')
     age = fields.Integer('Age', compute=employee_age)
     duration_of_employment = fields.Char('Duration of Employee', compute=employee_duration)
-
+# ]fdgdfsgds
     #telephone
     tel_line = fields.One2many('spc.telephone', 'tel_id', string='Telephone', copy=True)
 
@@ -378,9 +388,13 @@ class Employee(models.Model):
 
     #children
     children_line = fields.One2many('hr.employee.children', 'children_id', string='No. of Children', copy=True)
-
     # education background
+<<<<<<< HEAD
     education = fields.One2many('spc.employee.edu', 'education_id', string='Education Background')
+=======
+    # test
+    education = fields.One2many('spc.employee.edu','education_id', string='Education Background')
+>>>>>>> 0b95f99e93a2e5ad34d5cad0aab08bdc31016651
     intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study')
     studying_at = fields.Many2one('spc.institute', string='Studying at')
     studying_major = fields.Char(string='Major')
@@ -392,7 +406,11 @@ class Employee(models.Model):
     training_line = fields.One2many('spc.training.course', 'training_id', string='Training Course')
 
     #language skills
+<<<<<<< HEAD
     language_skill = fields.One2many('spc.language.skill', 'languageskill_id', string='Langauge')
+=======
+    language_skill = fields.One2many('spc.language.skill', 'lskill_ref', string='Langauge')
+>>>>>>> 0b95f99e93a2e5ad34d5cad0aab08bdc31016651
 
     #special_skills
     thai_typing = fields.Integer(string='Thai word/minute')
