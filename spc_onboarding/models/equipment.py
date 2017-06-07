@@ -14,6 +14,7 @@ class onboarding_mastereq(models.Model):
     distributor = fields.Char(string='Distributor')
     description = fields.Text(string='Description')
 
+
 class Onboarding_equipment(models.Model):
     _name = 'onboarding.equipment'
 

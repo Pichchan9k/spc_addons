@@ -127,9 +127,10 @@ class LanguageSkill(models.Model):
         return [('fair','Fair'),('good','Good'),('excellent','Excellent')]
 
     name = fields.Selection(languagename, string='Language')
-    speak = fields.Selection(level, string='Speak')
-    read = fields.Selection(level, string='Read')
-    write = fields.Selection(level, string='Write')
+    skill_speak = fields.Selection(level, string='Speak')
+    skill_read = fields.Selection(level, string='Read')
+    skill_write = fields.Selection(level, string='Write')
+    lskill_ref = fields.Many2one('hr.employee', index=True, required=False, ondelete='cascade')
   
 
 
@@ -399,8 +400,7 @@ class Employee(models.Model):
     training_line = fields.One2many('spc.training.course','training_id', string='Training Course')
 
     #language skills
-    l_skill_line = fields.One2many('spc.lskill', 'lskill_id', string='Langauge')
-    language_skill = fields.One2many('spc.language.skill', 'id', string='Langauge')
+    language_skill = fields.One2many('spc.language.skill', 'lskill_ref', string='Langauge')
 
     #special_skills
     thai_typing = fields.Integer(string='Thai word/minute')

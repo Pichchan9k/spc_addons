@@ -159,10 +159,10 @@
                                             <tree string='Address' editable="bottom">
                                                 <field name='address_type'/>
                                                 <field name='addr1'/>
-                                               <field name='subdistrict_id' />
-                                               <field name='district_id' />
-                                               <field name='provice_id' />
-                                               <field name='zipcode_id'/>
+                                                <field name='provice_id' />
+                                                <field name='district_id' />
+                                                <field name='subdistrict_id' />
+                                                <field name='zipcode_id'/>
                                             </tree>
                                         </field>
                                     </group>
@@ -198,12 +198,12 @@
                                         </field>
                                     </group>
                                     <group name="language_employee">
-                                        <field name="l_skill_line">
+                                        <field name="language_skill">
                                             <tree editable="bottom">
                                                 <field name="name"/>
-                                                <field name="speak"/>
-                                                <field name="read"/>
-                                                <field name="write"/>
+                                                <field name="skill_speak"/>
+                                                <field name="skill_read"/>
+                                                <field name="skill_write"/>
                                             </tree>
                                         </field>
                                     </group>
