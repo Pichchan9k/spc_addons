@@ -298,7 +298,7 @@ class Employee(models.Model):
                 digit13 = 11 - digit13
             # if digit13 == int(ciddata[12]):
                 # return True
-            if digit13 == int(ciddata[12]):
+            if digit13 != int(ciddata[12]):
                 return {
                     'warning': {
                         'title': "Incorrect CitizenID",
