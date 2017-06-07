@@ -14,12 +14,7 @@ class OnboardingMastereq(models.Model):
     distributor = fields.Char(string='Distributor')
     description = fields.Text(string='Description')
 
-<<<<<<< HEAD
 class OnboardingEquipment(models.Model):
-=======
-
-class Onboarding_equipment(models.Model):
->>>>>>> 0b95f99e93a2e5ad34d5cad0aab08bdc31016651
     _name = 'onboarding.equipment'
 
     name = fields.Char(string='Name', required=True)

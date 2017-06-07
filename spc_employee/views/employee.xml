@@ -201,15 +201,9 @@
                                         <field name="language_skill">
                                             <tree editable="bottom">
                                                 <field name="name"/>
-<<<<<<< HEAD
                                                 <field name="speak_skill"/>
                                                 <field name="read_skill"/>
                                                 <field name="write_skill"/>
-=======
-                                                <field name="skill_speak"/>
-                                                <field name="skill_read"/>
-                                                <field name="skill_write"/>
->>>>>>> 0b95f99e93a2e5ad34d5cad0aab08bdc31016651
                                             </tree>
                                         </field>
                                     </group>
