@@ -263,12 +263,19 @@ class Employee(models.Model):
 
     @api.constrains('citizen_id')
     def constrains_cid(self):
-        print 'citizen_id'
+        em_ids = self.env['hr.employee'].search([('citizen_id','=', self.citizen_id)])
+        print '--------------------------',em_ids
+        # hr.employee()
         cid = self.citizen_id
+        print cid
         if (cid is not False):
             if(len(cid) != 13):
                 print("false")
                 raise exceptions.ValidationError("Please Input CitizenID 13 number")
+
+            if(len(em_ids) != 1): 
+                print("false")
+                raise exceptions.ValidationError("Please use other CitizenID")
 
             for char in cid:
                 if char.isdigit() is False:
