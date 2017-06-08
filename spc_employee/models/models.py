@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api ,exceptions
 from datetime import datetime
 
 import sys
@@ -261,27 +261,19 @@ class Employee(models.Model):
         self.title_en = self.title_id.name
         self.title_th = self.title_id.name_th
 
-    @api.onchange('citizen_id')
-    def checkCID(self):
+    @api.constrains('citizen_id')
+    def constrains_cid(self):
+        print 'citizen_id'
         cid = self.citizen_id
         if (cid is not False):
             if(len(cid) != 13):
-                return {
-                    'warning': {
-                        'title': "Incorrect CitizenID",
-                        'message': "Please Input CitizenID 13 number ",
-                    },
-                }
+                print("false")
+                raise exceptions.ValidationError("Please Input CitizenID 13 number")
 
             for char in cid:
                 if char.isdigit() is False:
                     print("false")
-                    return {
-                        'warning': {
-                            'title': "Incorrect CitizenID",
-                            'message': "Please Input only number ",
-                        },
-                    }
+                    raise exceptions.ValidationError("Please Input only number")
             num = 0
             num2 = 13
             ciddata = list(cid)
@@ -299,12 +291,8 @@ class Employee(models.Model):
             # if digit13 == int(ciddata[12]):
                 # return True
             if digit13 != int(ciddata[12]):
-                return {
-                    'warning': {
-                        'title': "Incorrect CitizenID",
-                        'message': "Please Input Real Citizen ID ",
-                        },
-                    }
+               raise exceptions.ValidationError("Please Input real citizen number")
+
 
     @api.onchange('first_name_en', 'last_name_en')
     def name_en(self):
