@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import datetime
 
 import sys
@@ -17,7 +17,7 @@ class NameGet:
 
 class EducationLevel:
     def get_education_level(self):
-        print 'get_education_level'
+        # print 'get_education_level'
         return [('primery', 'Primary School'), ('secondary', 'Secondary School'), ('high', 'High School'), ('college/vocational', 'College'), ('bachelor', 'Bachelor Degree'), ('higher', 'Master Degree or higher')]
 
 class Department(models.Model):
@@ -29,7 +29,8 @@ class Department(models.Model):
 class Employee_type(models.Model):
     _name = 'hr.employee.type'
 
-    name = fields.Char('Employee Type')
+    name = fields.Char('Employee Type EN', required=True)
+    name_th = fields.Char('Employee Type TH', required=True)
 
 
 class Position(models.Model):
@@ -39,10 +40,10 @@ class Position(models.Model):
     def name_get(self):
         return NameGet().name_get(self)
 
-    name = fields.Char(string='Position Eng')
-    name_th = fields.Char(string='Position Thai')
-    level = fields.Char(string='Level', size=1)
-    code = fields.Char(string='Code')
+    name = fields.Char(string='Position Eng', required=True)
+    name_th = fields.Char(string='Position Thai', required=True)
+    level = fields.Char(string='Level', size=1, required=True)
+    code = fields.Char(string='Code', required=True)
 
 class Status(models.Model):
     _name = 'hr.employee.status'
@@ -51,8 +52,8 @@ class Status(models.Model):
     def name_get(self):
         return NameGet().name_get(self)
 
-    name = fields.Char(string='Status EN')
-    name_th = fields.Char(string='Status TH')
+    name = fields.Char(string='Status EN', required=True)
+    name_th = fields.Char(string='Status TH', required=True)
 
 class Provice(models.Model):
     _name = 'spc.address.provice'
@@ -61,9 +62,9 @@ class Provice(models.Model):
     def name_get(self):
         return NameGet().name_get(self)
 
-    name = fields.Char(string='Provice EN')
-    name_th = fields.Char(string='Provice TH')
-    pid = fields.Char(string='PID')
+    name = fields.Char(string='Provice EN', required=True)
+    name_th = fields.Char(string='Provice TH', required=True)
+    pid = fields.Char(string='PID', required=True)
 
 class District(models.Model):
     _name = 'spc.address.district'
@@ -72,10 +73,10 @@ class District(models.Model):
     def name_get(self):
         return NameGet().name_get(self)
 
-    name = fields.Char(string='District EN')
-    name_th = fields.Char(string='District TH')
-    pid = fields.Char(string='PID')
-    provice_pid = fields.Char(string='Provice PID')
+    name = fields.Char(string='District EN', required=True)
+    name_th = fields.Char(string='District TH', required=True)
+    pid = fields.Char(string='PID', required=True)
+    provice_pid = fields.Char(string='Provice PID', required=True)
 
 class Subdistrict(models.Model):
     _name = 'spc.address.subdistrict'
@@ -84,16 +85,16 @@ class Subdistrict(models.Model):
     def name_get(self):
         return NameGet().name_get(self)
 
-    name = fields.Char(string='Subdistrict EN')
-    name_th = fields.Char(string='Subdistrict TH')
-    pid = fields.Char(string='PID')
-    provice_pid = fields.Char(string='Provice PID')
-    district_pid = fields.Char(string='District PID')
+    name = fields.Char(string='Subdistrict EN', required=True)
+    name_th = fields.Char(string='Subdistrict TH', required=True)
+    pid = fields.Char(string='PID', required=True)
+    provice_pid = fields.Char(string='Provice PID', required=True)
+    district_pid = fields.Char(string='District PID', required=True)
 
 class Zipcode(models.Model):
     _name = 'spc.address.zipcode'
 
-    name = fields.Char(string='Zip Code', size=5)
+    name = fields.Char(string='Zip Code', size=5, required=True)
 
 class AddressType(models.Model):
     _name = 'spc.address.type'
@@ -102,19 +103,18 @@ class AddressType(models.Model):
     def name_get(self):
         return NameGet().name_get(self)
 
-    name = fields.Char(string='Address Type EN')
-    name_th = fields.Char(string='Address Type TH')
+    name = fields.Char(string='Address Type EN', required=True)
+    name_th = fields.Char(string='Address Type TH', required=True)
 
 class Address(models.Model):
     _name = 'spc.address'
 
-    address_type = fields.Many2one('spc.address.type', string='Address Type')
-    addr1 = fields.Char('Address')
-    provice_id = fields.Many2one('spc.address.provice', string='Provice')
-    district_id = fields.Many2one('spc.address.district', string='District')
-    subdistrict_id = fields.Many2one('spc.address.subdistrict', string='Subdistrict')
-    zipcode_id = fields.Many2one('spc.address.zipcode', string='Zip Code')
-    phone_number = fields.Integer('Phone Number')
+    address_type = fields.Many2one('spc.address.type', string='Address Type', required=True)
+    addr1 = fields.Char('Address', required=True)
+    provice_id = fields.Many2one('spc.address.provice', string='Provice', required=True)
+    district_id = fields.Many2one('spc.address.district', string='District', required=True)
+    subdistrict_id = fields.Many2one('spc.address.subdistrict', string='Subdistrict', required=True)
+    zipcode_id = fields.Many2one('spc.address.zipcode', string='Zip Code', required=True)
     address_id = fields.Many2one('hr.employee', string='Address Reference', index=True, required=False, ondelete='cascade')
 
 class LangageSkillName(models.Model):
@@ -167,19 +167,19 @@ class Religion(models.Model):
     def name_get(self):
         return NameGet().name_get(self)
 
-    name = fields.Char('Religion EN')
-    name_th = fields.Char('Religion TH')
+    name = fields.Char('Religion EN', required=True)
+    name_th = fields.Char('Religion TH', required=True)
 
 
 class NameTitle(models.Model):
     _name = 'hr.employee.title'
 
-    # @api.multi
-    # def name_get(self):
-    #     return NameGet().name_get(self)
+    @api.multi
+    def name_get(self):
+        return NameGet().name_get(self)
 
-    name = fields.Char('Title')
-    name_th = fields.Char('Title Th')
+    name = fields.Char('Title EN', required=True)
+    name_th = fields.Char('Title TH', required=True)
 
 class PastJob(models.Model):
     _name = 'hr.employee.pastjob'
@@ -187,7 +187,7 @@ class PastJob(models.Model):
 
     name = fields.Char(string='Company', required=True)
     company_address = fields.Char(string='Address', required=True)
-    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past', 'Past')], string='Type')
+    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past', 'Past')], string='Type' , required=True)
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     first_position = fields.Char(string='First Position', required=True)
@@ -200,12 +200,12 @@ class PastJob(models.Model):
 class CarLicense(models.Model):
     _name = 'hr.employee.bikelicense'
 
-    name = fields.Char(string='Type')
+    name = fields.Char(string='Type', required=True)
 
 class BikeLicense(models.Model):
     _name = 'hr.employee.carlicense'
 
-    name = fields.Char(string='Type')
+    name = fields.Char(string='Type', required=True)
 
 class References(models.Model):
     _name = 'hr.employee.ref'
@@ -227,7 +227,7 @@ class Children(models.Model):
             year_of_birthday = record.birth_date[:4]
             record.age = int(now_year) - int(year_of_birthday)
 
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Name')
     sex = fields.Selection([('male', 'Male'), ('female', 'Female')], string='Sex', required=True)
     birth_date = fields.Date(string='Date of Birth', required=True)
     age = fields.Char('Age', compute=child_age)
@@ -252,36 +252,29 @@ class Employee(models.Model):
 
     @api.onchange('position_id')
     def on_change_position(self):
-        print 'onchange position_id'
+        # print 'onchange position_id'
         self.level = self.position_id.level
 
-    @api.onchange('title_id')
-    def on_change_title(self):
-        print 'onchange title', self
-        self.title_en = self.title_id.name
-        self.title_th = self.title_id.name_th
-
-    @api.onchange('citizen_id')
-    def checkCID(self):
+    @api.constrains('citizen_id')
+    def constrains_cid(self):
+        em_ids = self.env['hr.employee'].search([('citizen_id','=', self.citizen_id)])
+        # print '--------------------------',em_ids
+        # hr.employee()
         cid = self.citizen_id
+        print cid
         if (cid is not False):
             if(len(cid) != 13):
-                return {
-                    'warning': {
-                        'title': "Incorrect CitizenID",
-                        'message': "Please Input CitizenID 13 number ",
-                    },
-                }
+                # print("false")
+                raise exceptions.ValidationError("Please Input CitizenID 13 number")
+
+            if(len(em_ids) != 1): 
+                # print("false")
+                raise exceptions.ValidationError("Please use other CitizenID")
 
             for char in cid:
                 if char.isdigit() is False:
-                    print("false")
-                    return {
-                        'warning': {
-                            'title': "Incorrect CitizenID",
-                            'message': "Please Input only number ",
-                        },
-                    }
+                    # print("false")
+                    raise exceptions.ValidationError("Please Input only number")
             num = 0
             num2 = 13
             ciddata = list(cid)
@@ -299,19 +292,14 @@ class Employee(models.Model):
             # if digit13 == int(ciddata[12]):
                 # return True
             if digit13 != int(ciddata[12]):
-                return {
-                    'warning': {
-                        'title': "Incorrect CitizenID",
-                        'message': "Please Input Real Citizen ID ",
-                        },
-                    }
+               raise exceptions.ValidationError("Please Input real citizen number")
 
     @api.onchange('first_name_en', 'last_name_en')
     def name_en(self):
         self.name = '%s %s' % (self.first_name_en, self.last_name_en)
-        if self.first_name_en is not False and self.last_name_en is not False:
-            email = '%s.%s' % (self.first_name_en, self.last_name_en[0][:1])
-            self.user = email.lower()
+        # if self.first_name_en is not False and self.last_name_en is not False:
+        #     email = '%s.%s' % (self.first_name_en, self.last_name_en[0][:1])
+        #     self.user = email.lower()
 
     @api.onchange('first_name_th', 'last_name_th')
     def name_th(self):
@@ -324,7 +312,7 @@ class Employee(models.Model):
             record.age = int(now_year) - int(year_of_birthday)
 
     def employee_duration(self):
-        print 'employee duration'
+        # print 'employee duration'
         now_year = datetime.now().strftime("%Y")
         now_month = datetime.now().strftime("%m")
         for record in self:
@@ -335,32 +323,33 @@ class Employee(models.Model):
             mounth_of_duration = int(now_month) - int(month_of_start)
 
             record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
-            print record.duration_of_employment
+
+
     name_th = fields.Char('Name Thai')
-    user = fields.Char('Username', readonly=False, required=True)
-    email = fields.Selection([('@sahapatco.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')], default='@sahapatco.th', string='Email', required=True)
+    user = fields.Char('Username', readonly=True)
+    email = fields.Selection([('@sahapat.co.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')], default='@sahapat.co.th', string='Email', required=True)
     title_id = fields.Many2one('hr.employee.title', string='Title', required=True)
-    title_en = fields.Char('Title En', required=True)
-    title_th = fields.Char('Title Th', required=True)
+    # title_en = fields.Char('Title EN', required=True)
+    # title_th = fields.Char('Title TH', required=True)
     first_name_en = fields.Char('Name', required=True)
     last_name_en = fields.Char('Surname', required=True)
     first_name_th = fields.Char('Name Thai', required=True)
     last_name_th = fields.Char('Surname Thai', required=True)
     nick_name_en = fields.Char('Nickname', required=True)
     nick_name_th = fields.Char('Nickname Thai', required=True)
-    position_id = fields.Many2one('hr.position', string='Position')
+    position_id = fields.Many2one('hr.position', string='Position', required=True)
     level = fields.Char('Level', size=1, stored=True, default='0')
     chief_id = fields.Many2one('hr.employee', string='Chief')
-    employee_type = fields.Many2one('hr.employee.type', string='Employee Type')
-    status = fields.Many2one('hr.employee.status', string='Status')
-    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group')
+    employee_type = fields.Many2one('hr.employee.type', string='Employee Type' , required=True)
+    status = fields.Many2one('hr.employee.status', string='Status' , required=True)
+    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group' , required=True)
     religion = fields.Many2one('hr.employee.religion', string='Religion')
-    citizen_id = fields.Char('CitizenID', size=13)
+    citizen_id = fields.Char('CitizenID', size=13, required=True)
     onboarding_date = fields.Date('Onboarding Date', required=True)
     sign_contact_date = fields.Date('Signed Date', required=True)
     start_date = fields.Date('Start Date', required=True)
     probation_end_date = fields.Date('ProbationEnd Date')
-    start_date = fields.Date('Start Date')
+    start_date = fields.Date('Start Date', required=True)
     employee_number = fields.Char(string='Employee ID')
     social_line = fields.Char('Line Id')
     social_facebook = fields.Char('Facebook')
@@ -369,7 +358,7 @@ class Employee(models.Model):
     race_id = fields.Many2one('res.country', string='Race')
     age = fields.Integer('Age', compute=employee_age)
     duration_of_employment = fields.Char('Duration of Employee', compute=employee_duration)
-# ]fdgdfsgds
+
     #telephone
     tel_line = fields.One2many('spc.telephone', 'tel_id', string='Telephone', copy=True)
 
@@ -380,7 +369,7 @@ class Employee(models.Model):
     children_line = fields.One2many('hr.employee.children', 'children_id', string='No. of Children', copy=True)
     # education background
     education = fields.One2many('spc.employee.edu', 'education_id', string='Education Background')
-    intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study')
+    intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study', required=True)
     studying_at = fields.Many2one('spc.institute', string='Studying at')
     studying_major = fields.Char(string='Major')
     studying_year_of_end = fields.Char(string='Year of graduation', limit=4)
@@ -410,41 +399,32 @@ class Employee(models.Model):
     reason_for_shift = fields.Char('Reason')
     travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?', required=True)
     reason_travel = fields.Char(string='Reason')
-    work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?')
-    reason_for_shift = fields.Char('Reason', readonly=True)
-    travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?')
-    reason_travel = fields.Char(string='Reason', readonly=True)
 
     # References
     references_line = fields.One2many('hr.employee.ref', 'ref_id', string='References')
 
+    # def create_res_users(self, vals):
+        # print 'create_res_users', self, ' : ', vals
+        # res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
+        # res_user.partner_id.email = login.lower()
+
     # @api.model
     # def create(self, vals):
-    #     print 'employee'
-    #     # vals['level'] = self.env['hr.position'].search([('id', '=', vals['position_id'])]).level
-    #     employee = super(Employee, self).create(vals)
-    #     login = '%s.%s@sahapat.co.th' % (employee.first_name_en, employee.last_name_en[0])
-    #     res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
-    #     res_user.partner_id.email = login.lower()
-    #     employee.user_id = res_user.id
-    #     # command = 'python /home/pichchanok/Desktop/odoo10/spc_addons/spc_api/activiti.py ' + str(employee.id)
-    #     # os.system(command)
-    #     return employee
-    # dsfsa
+        # print 'employee'
+        # employee = super(Employee, self).create(vals)
+        # login = '%s.%s@sahapat.co.th' % (employee.first_name_en, employee.last_name_en[0])
+        # res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
+        # res_user.partner_id.email = login.lower()
+        # employee.user_id = res_user.id
+        # command = 'python /home/pichchanok/Desktop/odoo10/spc_addons/spc_api/activiti.py ' + str(employee.id)
+        # os.system(command)
+        # self.create_res_users(employee.id)
+        # return employee
 
     # create send to ad > 4 param id, firstname lastname domain
-    def api(self):
-        print 'try_api', self
-        print self.env['res.users'].search([])
-
-    # @api.model
-    # def create(self, vals):
-    #     print 'Employee on create -----'
-    #     employee = super(Employee, self).create(vals)
-    #     create_res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': employee.name})
-    #     print create_res_user
-    #     employee.user_id = create_res_user.id
-    #     return employee
+    # def api(self):
+    #     print 'try_api', self
+    #     print self.env['res.users'].search([])
 
     # @api.multi
     # def write(self, vals):

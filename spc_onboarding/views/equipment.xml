@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!--<record id="onboarding_equipment_inherit" model="ir.ui.view"><field name="name">hr.employee.form_equipment_inherit</field><field name="model">hr.employee</field><field name="inherit_id" ref="spc_employee.hr_employee_inherit"/><field name="arch" type="xml"><xpath expr="//group[@name='citizenship']" position="after"><group><field name="equipment_onboarding_id"/></group></xpath></field></record>-->
-        <record id="maintenance_tree_inherit" model="ir.ui.view">
+        <!--<record id="onboarding_equipment_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form_equipment_inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="spc_employee.hr_employee_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='public']" position="after">
+                    <page name="equipment_event" string='Equipment &amp; Event'>
+                        <group string='Equipment'>
+                            <field name="equipment_onboarding_id" nolabel='1'>
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="category_id"/>
+                                    <field name="brand_id"/>
+                                    <field name="model"/>
+                                    <field name="assign_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>-->
+        <!--<record id="maintenance_tree_inherit" model="ir.ui.view">
             <field name="name">maintenance.equipment.tree_inherit</field>
             <field name="model">maintenance.equipment</field>
             <field name="inherit_id" ref="maintenance.hr_equipment_view_tree"/>
@@ -16,9 +38,9 @@
                         <field name="owner_user_id"/>
                         <field name="state"/>
                     </tree>
-                </xpath>
+                </xpath>    
             </field>
-        </record>
+        </record>-->
         <record id="hr_equipment_view_form_inherit" model="ir.ui.view">
             <field name="name">equipment.form_inherit</field>
             <field name="model">maintenance.equipment</field>
@@ -169,14 +191,15 @@
                 <p class="oe_view_nocontent_create">Create items</p>
             </field>
         </record>
-                <!--search-->
+        <!--search-->
         <record id="action_maintenance_equipment_draft_search" model="ir.ui.view">
             <field name="name">equipment.search</field>
             <field name="model">maintenance.equipment</field>
             <field name="arch" type="xml">
                 <search string="Search">
                     <field name="name"/>
-                    <field name="equipment_onboarding_id"/>
+                    <field name="owner_user_id"/>
+                    <field name="category_id"/>
                     <field name="brand_id"/>
                     <group expand='0' string='Group by...'>
                         <filter string='Equipment' domain="[]" context="{'group_by': 'name'}"/>
@@ -245,7 +268,6 @@
                         <filter string='Category' domain="[]" context="{'group_by': 'category_id'}"/>
                         <filter string='Department' domain="[]" context="{'group_by': 'department_id'}"/>
                         <filter string='Position' domain="[]" context="{'group_by': 'position_id'}"/>
-
                     </group>
                 </search>
             </field>

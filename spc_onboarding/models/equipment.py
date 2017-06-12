@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from datetime import datetime
 
 class OnboardingMastereq(models.Model):
     _name = 'onboarding.equipment.mastereq'
@@ -28,6 +29,7 @@ class OnboardingEquipment(models.Model):
     # filter
     department_id = fields.Many2one('hr.department', string='Department')
     position_id = fields.Many2one('hr.position', string='Position')
+    
     # level = fields.Char(string='Level')
     level = fields.Selection([('lv1', '1'), ('lv2', '2'), ('lv3', '3'), ('lv4', '4'), ('lv5', '5'),
                             ('lv6', '6')], string='Level')
@@ -57,10 +59,11 @@ class MaintenanceEquipment(models.Model):
 
     @api.multi
     def action_done(self):
+        self.assign_date = datetime.now().strftime("%Y-%m-%d")
         self.state = 'done'
 
-    owner_user_id = fields.Many2one('hr.employee', string='Owner', track_visibility='onchange')
-    responsible_id = fields.Many2one('hr.position', string='Responsible')
+    department_id = fields.Many2one('hr.department_id', string='Department')
+    position_id = fields.Many2one('hr.position', string='Position')
     equipment_onboarding_id = fields.Many2many('onboarding.equipment', string='OnBoarding')
     brand_id = fields.Many2one('maintenance.equipment.brand', string='Brand')
     state = fields.Selection([
@@ -72,27 +75,57 @@ class MaintenanceEquipment(models.Model):
 class EmployeeEquipment(models.Model):
     _inherit = 'hr.employee'
 
-    equipment_onboarding_id = fields.Many2many('maintenance.equipment', string="Equipment")
+    def create_users(self, employee):
+        email = ''
+        count = 0
+        check = False
+        while check is False:
+            print 'in while'
+            email = '%s.%s%s' % (employee.first_name_en, employee.last_name_en[count], employee.email)
+            print email.lower()
+            user = self.env['res.users'].search([('login','=', email.lower())])
+            print user.login
+            if email.lower() == user.login:
+                print 'email dupiate'
+                count = count +1
+            else :
+                check = True                
+
+        res_users = self.env['res.users'].sudo().create({
+            'name': employee.name,
+            'login': email.lower(),
+            'password': '!It3017'
+        })
+        employee_user = '%s.%s' % (employee.first_name_en, employee.last_name_en[count])
+        employee.user = employee_user.lower()
+        res_users.partner_id.email = email.lower()
+        return res_users
+
+    def equipment_from_onboarding(self, employee):
+        print 'equipment_from_onboarding'
+        for onboarding in self.env['onboarding.equipment'].search([]):
+            # print onboarding            
+            if onboarding.for_all is True:
+                for equipment in onboarding.equipment_id:
+                    self.create_equipment(employee, equipment)
 
     def create_equipment(self, employee, equipment):
+        print 'create_equipment'
         equipment = self.env['maintenance.equipment'].sudo().create({
             'name': equipment.name,
             'category_id': equipment.category_id.id,
-            'owner_user_id': employee.id
+            'owner_user_id': employee.user_id.id
         })
         employee.write({'equipment_onboarding_id': [(4, equipment.id)]})
         return
 
-    # @api.model
-    # def create(self, vals):
-    #     print 'onboarding create'
-    #     employee = super(Employee_equipment, self).create(vals)
-    #     for onboarding in self.env['onboarding.equipment'].search([]):
-    #         print onboarding
-    #         if (onboarding.for_all is True):
-    #             print 'f', onboarding.equipment_id
-    #             equipment = onboarding.equipment_id
-    #             print equipment
-    #             print equipment.name, equipment.category_id.id, employee.id
-    #             self.create_equipment(employee, onboarding.equipment_id)
-    #     return employee
+    @api.model
+    def create(self, vals):
+        print 'onboarding create'
+        employee = super(EmployeeEquipment, self).create(vals)
+        res_users = self.create_users(employee)
+        employee.user_id = res_users.id
+        onboarding_equipment_ids = self.equipment_from_onboarding(employee) 
+        return employee
+
+    equipment_onboarding_id = fields.Many2many('maintenance.equipment', string="Equipment")

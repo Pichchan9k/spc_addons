@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <menuitem id="menu_equipment" name="Equipment Onboarding" parent="hr.menu_hr_root" sequence="99"/>
-        <menuitem id="menu_onboarding_equipment" parent="menu_equipment" groups="base.group_user"/>
+        <menuitem id="menu_onboarding_equipment" parent="menu_equipment" action="action_onboarding_equipment" groups="base.group_user"/>
         <menuitem id="menu_onboarding_mastereq" parent="menu_equipment" action="action_onboarding_mastereq" groups="base.group_user"/>
         <menuitem id="menu_onboarding_category" parent="menu_equipment" action="action_onboarding_category" groups="base.group_user"/>
         <menuitem id="maintenance.menu_equipment_form" name="Equipments" parent="maintenance.menu_maintenance_title"/>

@@ -85,8 +85,8 @@
                             <notebook>
                                 <page name="position" string="Position">
                                     <group string="Position" col='4' colspan='2'>
-                                        <field name="department_id" colspan='4'/>
-                                        <field name="position_id"/>
+                                        <field name="department_id" options='{"no_open": True, "no_create": True}' colspan='4' required='1'/>
+                                        <field name="position_id" options='{"no_open": True, "no_create": True}'/>
                                         <field name="chief_id"/>
                                         <field name="level" />
                                         <field name="parent_id"/>
@@ -108,11 +108,11 @@
                                 <page name="public" string="Public Information">
                                     <group string="Citizenship &amp; Other Information" name="citizenship">
                                         <group >
-                                            <field name="country_id" options='{"no_open": True, "no_create": True}'/>
-                                            <field name="race_id" options='{"no_open": True, "no_create": True}'/>
+                                            <field name="country_id" options='{"no_open": True, "no_create": True}' required='1'/>
+                                            <field name="race_id" options='{"no_open": True, "no_create": True}' required='1'/>
                                             <field name="identification_id" groups="hr.group_hr_user" invisible='1'/>
-                                            <field name="citizen_id" groups="hr.group_hr_user"/>
-                                            <field name="gender"/>
+                                            <field name="citizen_id" groups="hr.group_hr_user" required='1'/>
+                                            <field name="gender" required='1'/>
                                             <field name="passport_id" groups="hr.group_hr_user" invisible='1'/>
                                             <field name="bank_account_id" context="{'default_partner_id': address_home_id}" invisible='1'/>
                                         </group>
@@ -120,16 +120,16 @@
                                             <field name="address_home_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
                                         </group>
                                         <group>
-                                            <field name="religion"/>
+                                            <field name="religion" required='1'/>
                                             <field name="birthday" required='1'/>
-                                            <field name="marital"/>
+                                            <field name="marital" required='1'/>
                                         </group>
                                     </group>
                                     <group >
                                         <group col='4' colspan='2'>
                                             <field name="personal_disease"/>
                                             <field name="allergy"/>
-                                            <field name="blood_group"/>
+                                            <field name="blood_group" required='1'/>
                                         </group>
                                     </group>
                                     <group string="Social Information" name="social">
