@@ -252,28 +252,24 @@ class Employee(models.Model):
 
     @api.onchange('position_id')
     def on_change_position(self):
-        # print 'onchange position_id'
         self.level = self.position_id.level
 
     @api.constrains('citizen_id')
     def constrains_cid(self):
         em_ids = self.env['hr.employee'].search([('citizen_id','=', self.citizen_id)])
-        # print '--------------------------',em_ids
-        # hr.employee()
         cid = self.citizen_id
-        print cid
         if (cid is not False):
             if(len(cid) != 13):
-                # print("false")
                 raise exceptions.ValidationError("Please Input CitizenID 13 number")
 
-            if(len(em_ids) != 1): 
-                # print("false")
+            if(len(em_ids) != 1):
+                raise exceptions.ValidationError("Please Input CitizenID 13 number")
+
+            if(len(em_ids) != 1):
                 raise exceptions.ValidationError("Please use other CitizenID")
 
             for char in cid:
                 if char.isdigit() is False:
-                    # print("false")
                     raise exceptions.ValidationError("Please Input only number")
             num = 0
             num2 = 13
