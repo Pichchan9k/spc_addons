@@ -1,15 +1,5 @@
- <!--<?xml version="1.0" encoding="utf-8"?>-->
-  <odoo>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
   <data>
-    <!--<template id="assets_backend" name="spc_employee assets" inherit_id="web.assets_backend">
-      <xpath expr="." position="inside">
-        <link rel="stylesheet" href="/spc_employee/static/css/style.css"/>
-      </xpath>
-    </template>
-    <template id="orgchart">
-      <div id="chart-container">
-        <h1>Red</h1>
-      </div>
-    </template>-->
   </data>
 </odoo>

@@ -399,24 +399,6 @@ class Employee(models.Model):
     # References
     references_line = fields.One2many('hr.employee.ref', 'ref_id', string='References')
 
-    # def create_res_users(self, vals):
-        # print 'create_res_users', self, ' : ', vals
-        # res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
-        # res_user.partner_id.email = login.lower()
-
-    # @api.model
-    # def create(self, vals):
-        # print 'employee'
-        # employee = super(Employee, self).create(vals)
-        # login = '%s.%s@sahapat.co.th' % (employee.first_name_en, employee.last_name_en[0])
-        # res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
-        # res_user.partner_id.email = login.lower()
-        # employee.user_id = res_user.id
-        # command = 'python /home/pichchanok/Desktop/odoo10/spc_addons/spc_api/activiti.py ' + str(employee.id)
-        # os.system(command)
-        # self.create_res_users(employee.id)
-        # return employee
-
     # create send to ad > 4 param id, firstname lastname domain
     # def api(self):
     #     print 'try_api', self
