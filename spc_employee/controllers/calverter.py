@@ -49,6 +49,9 @@ class calverter:
           
           self.JALALI_EPOCH = 1948320.5;
           self.JALALI_WEEKDAYS = ("Yekshanbeh", "Doshanbeh", "Seshhanbeh", "Chaharshanbeh", "Panjshanbeh", "Jomeh", "Shanbeh")
+          
+          self.THAIBUDDHIST_EPOCH = 1721425.5
+          self.THAIBUDDHIST_WEEKDAYS = ("อาทิตย์","จันทร์", "อังคาร", "พุทธ", "พฤหัสบดี", "ศุกร์", "เสาร์")
      
      
      def jwday(self, j):
@@ -293,4 +296,26 @@ class calverter:
           day = int(jd - self.jalali_to_jd(year, month, 1)) + 1
           return year, month, day
      
+     def leap_thaibuddist(self, year):
+          "LEAP_THAIBUDDHIST: Is a given year a leap year in the Islamic calendar ?"
+          
+          return (year + 543)
+     
+     
+#      def thaibuddist_to_jd(self, year, month, day):
+#           "THAIBUDDHIST_TO_JD: Determine Julian day from Thai Buddist date"
+          
+#           return (day + math.ceil(29.5 * (month - 1)) + \
+#                   (year - 1) * 354 + \
+#                   math.floor((3 + (11 * year)) / 30) + \
+#                   self.THAIBUDDHIST_EPOCH) - 1
+     
+#      def jd_to_thaibuddist(self, jd):
+#           "JD_TO_THAIBUDDIST: Calculate Thai Buddist date from Julian day"
+         
+#           jd = math.floor(jd) + 0.5
+#           year = int(math.floor(((30 * (jd - self.THAIBUDDHIST_EPOCH)) + 10646) / 10631))
+#           month = int(min(12, math.ceil((jd - (29 + self.islamic_to_jd(year, 1, 1))) / 29.5) + 1))
+#           day = int(jd - self.islamic_to_jd(year, month, 1)) + 1;
+#           return year, month, day
      
