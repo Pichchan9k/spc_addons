@@ -29,6 +29,7 @@
             <field name="arch" type="xml">
                 <search string="Position">
                     <field name="name" string="Position"/>
+                    <field name="name_th" string="ตำแหน่ง"/>
                 </search>
             </field>
         </record>
@@ -130,6 +131,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
         </record>
+
         <menuitem id="menu_view_position_form" parent="hr.menu_hr_root" action="employee_position_view" groups="hr.group_hr_user" sequence="91"/>
 
          <record id="act_position_from_department" model="ir.actions.act_window">

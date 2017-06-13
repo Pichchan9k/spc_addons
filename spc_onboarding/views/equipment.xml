@@ -49,7 +49,7 @@
                 <xpath expr="//form" position="replace">
                     <form string="Equipments">
                         <header>
-                            <button name="action_draft" type="object" string="Reset to draft" states="confirmed,done"/>
+                            <button name="action_draft" type="object" string="Reset to Pending" states="confirmed,done"/>
                             <button name="action_confirm" type="object" string="Confirm" states="draft" class="oe_highlight"/>
                             <button name="action_done" type="object" string="Mark as done" states="confirmed" class="oe_highlight"/>
                             <field name="state" widget="statusbar"/>
@@ -182,7 +182,7 @@
         </record>
         <!-- equiment draft -->
         <record id="action_maintenance_equipment_draft_form" model="ir.actions.act_window">
-            <field name="name">Draft / Confirmed</field>
+            <field name="name">Pending / Confirmed</field>
             <field name="res_model">maintenance.equipment</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>

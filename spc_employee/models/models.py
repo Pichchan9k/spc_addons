@@ -5,6 +5,8 @@ from datetime import datetime
 import sys
 import os
 
+import calverter
+
 class NameGet:
     def name_get(self, vals):
         res = []
@@ -290,6 +292,43 @@ class Employee(models.Model):
             if digit13 != int(ciddata[12]):
                raise exceptions.ValidationError("Please Input real citizen number")
 
+    @api.onchange('citizen_id')
+    def checkWarning(self):
+        em_ids = self.env['hr.employee'].search([('citizen_id','=', self.citizen_id)])
+        cid = self.citizen_id
+        if (cid is not False):
+            if(len(cid) != 13):
+                raise exceptions.ValidationError("Please Input CitizenID 13 number")
+
+            if(len(em_ids) != 1):
+                raise exceptions.ValidationError("Please Input CitizenID 13 number")
+
+            if(len(em_ids) != 1):
+                raise exceptions.ValidationError("Please use other CitizenID")
+
+            for char in cid:
+                if char.isdigit() is False:
+                    raise exceptions.ValidationError("Please Input only number")
+            num = 0
+            num2 = 13
+            ciddata = list(cid)
+            sum = 0
+            while num < 12:
+                sum += int(ciddata[num]) * (num2 - num)
+                num += 1
+            digit13 = sum % 11
+            if digit13 == 0:
+                digit13 = 1
+            elif digit13 == 1:
+                digit13 = 0
+            else:
+                digit13 = 11 - digit13
+            # if digit13 == int(ciddata[12]):
+                # return True
+            if digit13 != int(ciddata[12]):
+               raise exceptions.ValidationError("Please Input real citizen number")
+        
+
     @api.onchange('first_name_en', 'last_name_en')
     def name_en(self):
         self.name = '%s %s' % (self.first_name_en, self.last_name_en)
@@ -319,6 +358,13 @@ class Employee(models.Model):
             mounth_of_duration = int(now_month) - int(month_of_start)
 
             record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
+   
+    @api.onchange('onboarding_date')
+    def thaiBuddistEra(self):
+        cal = calverter.calverter()
+        bc = datetime.now().strftime("%Y")    
+        be = cal.leap_thaibuddist(int(bc))
+        
 
 
     name_th = fields.Char('Name Thai')
