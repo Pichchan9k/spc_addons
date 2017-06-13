@@ -26,16 +26,16 @@ class OnboardingEquipment(models.Model):
     description = fields.Text(string='Description')
 
     # filter
-    department_id = fields.Many2one('hr.department', string='Department')
-    position_id = fields.Many2one('hr.position', string='Position')
+    department_id = fields.Many2many('hr.department', string='Department')
+    position_id = fields.Many2many('hr.position', string='Position')
 
     # level = fields.Char(string='Level')
     level = fields.Selection([('lv1', '1'), ('lv2', '2'), ('lv3', '3'), ('lv4', '4'), ('lv5', '5'),
                             ('lv6', '6')], string='Level')
 
     # exclude
-    exclude_department_id = fields.Many2one('hr.department', string='Department')
-    exclude_position_id = fields.Many2one('hr.position', string='Position')
+    exclude_department_id = fields.Many2many('hr.department', string='Department')
+    exclude_position_id = fields.Many2many('hr.position', string='Position')
     exclude_level = fields.Selection([('lv1', '1'), ('lv2', '2'), ('lv3', '3'), ('lv4', '4'), ('lv5', '5'),
                             ('lv6', '6')], string='Level')
 
