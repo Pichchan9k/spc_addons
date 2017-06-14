@@ -187,7 +187,7 @@ class PastJob(models.Model):
 
     name = fields.Char(string='Company', required=True)
     company_address = fields.Char(string='Address', required=True)
-    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past', 'Past')], string='Type' , required=True)
+    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past', 'Past')], string='Type', required=True)
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     first_position = fields.Char(string='First Position', required=True)
@@ -256,7 +256,7 @@ class Employee(models.Model):
 
     @api.constrains('citizen_id')
     def constrains_cid(self):
-        em_ids = self.env['hr.employee'].search([('citizen_id','=', self.citizen_id)])
+        em_ids = self.env['hr.employee'].search([('citizen_id', '=', self.citizen_id)])
         cid = self.citizen_id
         if (cid is not False):
             if(len(cid) != 13):
@@ -288,7 +288,7 @@ class Employee(models.Model):
             # if digit13 == int(ciddata[12]):
                 # return True
             if digit13 != int(ciddata[12]):
-               raise exceptions.ValidationError("Please Input real citizen number")
+                raise exceptions.ValidationError("Please Input real citizen number")
 
     @api.onchange('first_name_en', 'last_name_en')
     def name_en(self):
@@ -312,14 +312,13 @@ class Employee(models.Model):
         now_year = datetime.now().strftime("%Y")
         now_month = datetime.now().strftime("%m")
         for record in self:
-            year_of_start = record.start_date[:4]
+            year_of_start = record.onboarding_date[:4]
             year_of_dulation = int(now_year) - int(year_of_start)
 
-            month_of_start = record.start_date[5:][:2]
+            month_of_start = record.onboarding_date[5:][:2]
             mounth_of_duration = int(now_month) - int(month_of_start)
 
             record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
-
 
     name_th = fields.Char('Name Thai')
     user = fields.Char('Username', readonly=True)
@@ -336,16 +335,15 @@ class Employee(models.Model):
     position_id = fields.Many2one('hr.position', string='Position', required=True)
     level = fields.Char('Level', size=1, stored=True, default='0')
     chief_id = fields.Many2one('hr.employee', string='Chief')
-    employee_type = fields.Many2one('hr.employee.type', string='Employee Type' , required=True)
-    status = fields.Many2one('hr.employee.status', string='Status' , required=True)
-    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group' , required=True)
+    employee_type = fields.Many2one('hr.employee.type', string='Employee Type')
+    status = fields.Many2one('hr.employee.status', string='Status', required=True)
+    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group', required=True)
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     citizen_id = fields.Char('CitizenID', size=13, required=True)
     onboarding_date = fields.Date('Onboarding Date', required=True)
     sign_contact_date = fields.Date('Signed Date', required=True)
-    start_date = fields.Date('Start Date', required=True)
     probation_end_date = fields.Date('ProbationEnd Date')
-    start_date = fields.Date('Start Date', required=True)
+    # start_date = fields.Date('Start Date')
     employee_number = fields.Char(string='Employee ID')
     social_line = fields.Char('Line Id')
     social_facebook = fields.Char('Facebook')
@@ -365,7 +363,7 @@ class Employee(models.Model):
     children_line = fields.One2many('hr.employee.children', 'children_id', string='No. of Children', copy=True)
     # education background
     education = fields.One2many('spc.employee.edu', 'education_id', string='Education Background')
-    intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study', required=True)
+    intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study')
     studying_at = fields.Many2one('spc.institute', string='Studying at')
     studying_major = fields.Char(string='Major')
     studying_year_of_end = fields.Char(string='Year of graduation', limit=4)
@@ -391,20 +389,10 @@ class Employee(models.Model):
     past_job = fields.One2many('hr.employee.pastjob', 'pastjob_id', string='Record')
 
     ever_worked_sahagroup = fields.Boolean(string="Have you ever working with SAHA GROUP?")
-    work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?', required=True)
+    work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?', required=False)
     reason_for_shift = fields.Char('Reason')
-    travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?', required=True)
+    travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?', required=False)
     reason_travel = fields.Char(string='Reason')
 
     # References
     references_line = fields.One2many('hr.employee.ref', 'ref_id', string='References')
-
-    # create send to ad > 4 param id, firstname lastname domain
-    # def api(self):
-    #     print 'try_api', self
-    #     print self.env['res.users'].search([])
-
-    # @api.multi
-    # def write(self, vals):
-    #     vals['level'] = self.env['hr.position'].search([('id','=',vals['position_id'])]).level
-    #     return super(Employee, self).write(vals)

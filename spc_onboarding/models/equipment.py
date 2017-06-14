@@ -49,8 +49,8 @@ class MaintenanceEquipment(models.Model):
     _inherit = 'maintenance.equipment'
 
     @api.multi
-    def action_draft(self):
-        self.state = 'draft'
+    def action_pending(self):
+        self.state = 'pending'
 
     @api.multi
     def action_confirm(self):
@@ -63,13 +63,14 @@ class MaintenanceEquipment(models.Model):
 
     department_id = fields.Many2one('hr.department_id', string='Department')
     position_id = fields.Many2one('hr.position', string='Position')
-    equipment_onboarding_id = fields.Many2many('onboarding.equipment', string='OnBoarding')
+    master_equipment = fields.Many2one('onboarding.equipment.mastereq', string='Master Equipment')
+    equipment_onboarding_id = fields.Many2one('onboarding.equipment', string='OnBoarding')
     brand_id = fields.Many2one('maintenance.equipment.brand', string='Brand')
     state = fields.Selection([
-        ('draft', "Draft"),
+        ('pending', "Pending"),
         ('confirmed', "Confirmed"),
         ('done', "Done"),
-    ], default='draft')
+    ], default='pending')
 
 class EmployeeEquipment(models.Model):
     _inherit = 'hr.employee'
@@ -101,16 +102,18 @@ class EmployeeEquipment(models.Model):
         for onboarding in self.env['onboarding.equipment'].search([]):
             if onboarding.for_all is True:
                 for equipment in onboarding.equipment_id:
-                    self.create_equipment(employee, equipment)
+                    self.create_equipment(employee, master_equipment, onboarding)
 
-    def create_equipment(self, employee, equipment):
+    def create_equipment(self, employee, master_equipment, onboarding):
         print 'create_equipment'
         equipment = self.env['maintenance.equipment'].sudo().create({
-            'name': equipment.name,
-            'category_id': equipment.category_id.id,
-            'owner_user_id': employee.user_id.id
+            'name': master_equipment.name,
+            'category_id': master_equipment.category_id.id,
+            'owner_user_id': employee.user_id.id,
+            'equipment_onboarding_id': onboarding.id,
+            'master_equipment': master_equipment.id
         })
-        employee.write({'equipment_onboarding_id': [(4, equipment.id)]})
+        # employee.write({'equipment_onboarding_id': [(4, equipment.id)]})
         return
 
     @api.model
