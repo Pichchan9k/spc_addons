@@ -92,9 +92,8 @@
                                         <field name="parent_id"/>
                                         <field name="sign_contact_date"/>
                                         <field name="employee_type"/>
-                                        <field name="start_date"/>
-                                        <field name="status"/>
                                         <field name="onboarding_date"/>
+                                        <field name="status"/>
                                         <field name="probation_end_date"/>
                                     </group>
                                     <group string="Contact Information" invisible='1'>

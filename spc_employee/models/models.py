@@ -5,8 +5,6 @@ from datetime import datetime
 import sys
 import os
 
-import calverter
-
 class NameGet:
     def name_get(self, vals):
         res = []
@@ -351,10 +349,10 @@ class Employee(models.Model):
         now_year = datetime.now().strftime("%Y")
         now_month = datetime.now().strftime("%m")
         for record in self:
-            year_of_start = record.start_date[:4]
+            year_of_start = record.onboarding_date[:4]
             year_of_dulation = int(now_year) - int(year_of_start)
 
-            month_of_start = record.start_date[5:][:2]
+            month_of_start = record.onboarding_date[5:][:2]
             mounth_of_duration = int(now_month) - int(month_of_start)
 
             record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
@@ -364,15 +362,11 @@ class Employee(models.Model):
         cal = calverter.calverter()
         bc = datetime.now().strftime("%Y")    
         be = cal.leap_thaibuddist(int(bc))
-        
-
 
     name_th = fields.Char('Name Thai')
     user = fields.Char('Username', readonly=True)
     email = fields.Selection([('@sahapat.co.th', '@sahapat.co.th'), ('@sahapat.com', '@sahapat.com')], default='@sahapat.co.th', string='Email', required=True)
     title_id = fields.Many2one('hr.employee.title', string='Title', required=True)
-    # title_en = fields.Char('Title EN', required=True)
-    # title_th = fields.Char('Title TH', required=True)
     first_name_en = fields.Char('Name', required=True)
     last_name_en = fields.Char('Surname', required=True)
     first_name_th = fields.Char('Name Thai', required=True)
@@ -389,9 +383,7 @@ class Employee(models.Model):
     citizen_id = fields.Char('CitizenID', size=13, required=True)
     onboarding_date = fields.Date('Onboarding Date', required=True)
     sign_contact_date = fields.Date('Signed Date', required=True)
-    start_date = fields.Date('Start Date', required=True)
     probation_end_date = fields.Date('ProbationEnd Date')
-    start_date = fields.Date('Start Date', required=True)
     employee_number = fields.Char(string='Employee ID')
     social_line = fields.Char('Line Id')
     social_facebook = fields.Char('Facebook')
