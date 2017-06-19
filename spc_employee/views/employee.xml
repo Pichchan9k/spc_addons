@@ -296,5 +296,12 @@
                 </xpath>
             </field>
         </record>
+        <record id="spc_employee_import" model="ir.actions.act_window">
+            <field name="name">Import</field>
+            <field name="res_model">hr.employee.import</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_action_import_employee" parent="hr.menu_human_resources_configuration" action="spc_employee_import" />
     </data>
 </odoo>
