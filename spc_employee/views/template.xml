@@ -10,6 +10,7 @@
       <div id="chart-container">
         <h1>Red</h1>
       </div>
+      test
     </template>-->
   </data>
 </odoo>
