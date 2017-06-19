@@ -98,28 +98,22 @@ class EmployeeEquipment(models.Model):
 
     def equipment_from_onboarding(self, employee):
         print 'equipment_from_onboarding'
+        employee = self.env['hr.employee'].search([('id', '=', employee)])
         for onboarding in self.env['onboarding.equipment'].search([]):
             if onboarding.for_all is True:
                 for equipment in onboarding.equipment_id:
-                    self.create_equipment(employee, equipment)
+                    self.create_equipment(employee, equipment, onboarding)
 
-    def create_equipment(self, employee, equipment):
+    def create_equipment(self, employee, equipment, onboarding):
         print 'create_equipment'
         equipment = self.env['maintenance.equipment'].sudo().create({
             'name': equipment.name,
             'category_id': equipment.category_id.id,
-            'owner_user_id': employee.user_id.id
+            'owner_user_id': employee.user_id.id,
+            # 'equipment_onboarding_id': onboarding.id,
+            # 'master_equipment': master_equipment.id
         })
         employee.write({'equipment_onboarding_id': [(4, equipment.id)]})
         return
-
-    @api.model
-    def create(self, vals):
-        print 'onboarding create'
-        employee = super(EmployeeEquipment, self).create(vals)
-        res_users = self.create_users(employee)
-        employee.user_id = res_users.id
-        onboarding_equipment_ids = self.equipment_from_onboarding(employee)
-        return employee
 
     equipment_onboarding_id = fields.Many2many('maintenance.equipment', string="Equipment")

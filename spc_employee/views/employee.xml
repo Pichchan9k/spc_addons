@@ -120,7 +120,7 @@
                                             <field name="address_home_id" context="{'show_address': 1}" options='{"always_reload": True, "highlight_first_line": True}'/>
                                         </group>
                                         <group>
-                                            <field name="religion" required='1'/>
+                                            <field name="religion" />
                                             <field name="birthday" required='1'/>
                                             <field name="marital" required='1'/>
                                         </group>
@@ -129,7 +129,7 @@
                                         <group col='4' colspan='2'>
                                             <field name="personal_disease"/>
                                             <field name="allergy"/>
-                                            <field name="blood_group" required='1'/>
+                                            <field name="blood_group"/>
                                         </group>
                                     </group>
                                     <group string="Social Information" name="social">

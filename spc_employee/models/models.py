@@ -377,14 +377,20 @@ class Employee(models.Model):
     last_name_en = fields.Char('Surname', required=True)
     first_name_th = fields.Char('Name Thai', required=True)
     last_name_th = fields.Char('Surname Thai', required=True)
-    nick_name_en = fields.Char('Nickname', required=True)
-    nick_name_th = fields.Char('Nickname Thai', required=True)
+    nick_name_en = fields.Char('Nickname')
+    nick_name_th = fields.Char('Nickname Thai')
     position_id = fields.Many2one('hr.position', string='Position', required=True)
     level = fields.Char('Level', size=1, stored=True, default='0')
     chief_id = fields.Many2one('hr.employee', string='Chief')
+<<<<<<< HEAD
     employee_type = fields.Many2one('hr.employee.type', string='Employee Type' , required=True)
     status = fields.Many2one('hr.employee.status', string='Status' , required=True)
     blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group' , required=True)
+=======
+    employee_type = fields.Many2one('hr.employee.type', string='Employee Type')
+    status = fields.Many2one('hr.employee.status', string='Status', required=True)
+    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group')
+>>>>>>> 87d2343cab4254eb64649175d1a5e71ec8068407
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     citizen_id = fields.Char('CitizenID', size=13, required=True)
     onboarding_date = fields.Date('Onboarding Date', required=True)
@@ -445,6 +451,7 @@ class Employee(models.Model):
     # References
     references_line = fields.One2many('hr.employee.ref', 'ref_id', string='References')
 
+<<<<<<< HEAD
     # def create_res_users(self, vals):
         # print 'create_res_users', self, ' : ', vals
         # res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
@@ -472,3 +479,15 @@ class Employee(models.Model):
     # def write(self, vals):
     #     vals['level'] = self.env['hr.position'].search([('id','=',vals['position_id'])]).level
     #     return super(Employee, self).write(vals)
+=======
+    @api.model
+    def create(self, vals):
+        print 'onboarding create'
+        employee = super(Employee, self).create(vals)
+        # res_users = self.create_users(employee)
+        command = 'python spc_addons/spc_employee/models/create_employee.py %s %s %s %s %s' % (str(employee.id), str(employee.first_name_en), str(employee.last_name_en), str(employee.email), str(employee.department_id.name)) 
+        os.system(command)
+        # employee.user_id = res_users.id
+        # onboarding_equipment_ids = self.equipment_from_onboarding(employee)
+        return employee
+>>>>>>> 87d2343cab4254eb64649175d1a5e71ec8068407
