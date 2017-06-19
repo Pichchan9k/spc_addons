@@ -69,7 +69,12 @@ class Import(models.Model):
             # print obj
             self.env['hr.employee'].sudo().create(obj)
 
+    name = fields.Char()
     data = fields.Binary('Import')
+    success_row = fields.One2many('hr.employee.importline')
+    fail_row = fields.One2many('hr.employee.importline')
+    state = fields.Boolean(string='State')
+    desc = fields.Text('Description')
 
 # Gender -male -female -other
 # blood -a -b -ab -o
