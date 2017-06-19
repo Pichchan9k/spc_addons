@@ -63,7 +63,8 @@ class MaintenanceEquipment(models.Model):
 
     department_id = fields.Many2one('hr.department_id', string='Department')
     position_id = fields.Many2one('hr.position', string='Position')
-    equipment_onboarding_id = fields.Many2many('onboarding.equipment', string='OnBoarding')
+    master_equipment = fields.Many2one('onboarding.equipment.mastereq', string='Master Equipment')
+    equipment_onboarding_id = fields.Many2one('onboarding.equipment', string='OnBoarding')
     brand_id = fields.Many2one('maintenance.equipment.brand', string='Brand')
     state = fields.Selection([
         ('pending', "Pending"),

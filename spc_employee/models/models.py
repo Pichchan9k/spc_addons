@@ -187,7 +187,7 @@ class PastJob(models.Model):
 
     name = fields.Char(string='Company', required=True)
     company_address = fields.Char(string='Address', required=True)
-    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past', 'Past')], string='Type' , required=True)
+    company_type = fields.Selection([('sahagroup', 'Saha Group'), ('present', 'Present'), ('past', 'Past')], string='Type', required=True)
     start_date = fields.Date(string='Start Date', required=True)
     end_date = fields.Date(string='End Date', required=True)
     first_position = fields.Char(string='First Position', required=True)
@@ -256,7 +256,7 @@ class Employee(models.Model):
 
     @api.constrains('citizen_id')
     def constrains_cid(self):
-        em_ids = self.env['hr.employee'].search([('citizen_id','=', self.citizen_id)])
+        em_ids = self.env['hr.employee'].search([('citizen_id', '=', self.citizen_id)])
         cid = self.citizen_id
         if (cid is not False):
             if(len(cid) != 13):
@@ -288,7 +288,7 @@ class Employee(models.Model):
             # if digit13 == int(ciddata[12]):
                 # return True
             if digit13 != int(ciddata[12]):
-               raise exceptions.ValidationError("Please Input real citizen number")
+                raise exceptions.ValidationError("Please Input real citizen number")
 
     @api.onchange('first_name_en', 'last_name_en')
     def name_en(self):
@@ -337,7 +337,7 @@ class Employee(models.Model):
     chief_id = fields.Many2one('hr.employee', string='Chief')
     employee_type = fields.Many2one('hr.employee.type', string='Employee Type')
     status = fields.Many2one('hr.employee.status', string='Status', required=True)
-    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group' , required=True)
+    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group')
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     citizen_id = fields.Char('CitizenID', size=13, required=True)
     onboarding_date = fields.Date('Onboarding Date', required=True)
