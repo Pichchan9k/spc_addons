@@ -382,15 +382,9 @@ class Employee(models.Model):
     position_id = fields.Many2one('hr.position', string='Position', required=True)
     level = fields.Char('Level', size=1, stored=True, default='0')
     chief_id = fields.Many2one('hr.employee', string='Chief')
-<<<<<<< HEAD
-    employee_type = fields.Many2one('hr.employee.type', string='Employee Type' , required=True)
-    status = fields.Many2one('hr.employee.status', string='Status' , required=True)
-    blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group' , required=True)
-=======
     employee_type = fields.Many2one('hr.employee.type', string='Employee Type')
     status = fields.Many2one('hr.employee.status', string='Status', required=True)
     blood_group = fields.Selection([('a', 'A'), ('b', 'B'), ('ab', 'AB'), ('o', 'O')], string='Blood Group')
->>>>>>> 87d2343cab4254eb64649175d1a5e71ec8068407
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     citizen_id = fields.Char('CitizenID', size=13, required=True)
     onboarding_date = fields.Date('Onboarding Date', required=True)
@@ -451,35 +445,6 @@ class Employee(models.Model):
     # References
     references_line = fields.One2many('hr.employee.ref', 'ref_id', string='References')
 
-<<<<<<< HEAD
-    # def create_res_users(self, vals):
-        # print 'create_res_users', self, ' : ', vals
-        # res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
-        # res_user.partner_id.email = login.lower()
-
-    # @api.model
-    # def create(self, vals):
-        # print 'employee'
-        # employee = super(Employee, self).create(vals)
-        # login = '%s.%s@sahapat.co.th' % (employee.first_name_en, employee.last_name_en[0])
-        # res_user = self.env['res.users'].sudo().create({'name': employee.name, 'login': login.lower(), 'password': 123456})
-        # res_user.partner_id.email = login.lower()
-        # employee.user_id = res_user.id
-        # command = 'python /home/pichchanok/Desktop/odoo10/spc_addons/spc_api/activiti.py ' + str(employee.id)
-        # os.system(command)
-        # self.create_res_users(employee.id)
-        # return employee
-
-    # create send to ad > 4 param id, firstname lastname domain
-    # def api(self):
-    #     print 'try_api', self
-    #     print self.env['res.users'].search([])
-
-    # @api.multi
-    # def write(self, vals):
-    #     vals['level'] = self.env['hr.position'].search([('id','=',vals['position_id'])]).level
-    #     return super(Employee, self).write(vals)
-=======
     @api.model
     def create(self, vals):
         print 'onboarding create'
@@ -490,4 +455,3 @@ class Employee(models.Model):
         # employee.user_id = res_users.id
         # onboarding_equipment_ids = self.equipment_from_onboarding(employee)
         return employee
->>>>>>> 87d2343cab4254eb64649175d1a5e71ec8068407
