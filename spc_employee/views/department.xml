@@ -15,7 +15,7 @@
             <field name="name">Employees</field>
             <field name="res_model">hr.employee</field>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,form,tree</field>
+            <field name="view_mode">tree,form,kanban</field>
             <field name="search_view_id" ref="hr_view_employee_filter_inherit"/>
             <field name="context">{"search_default_position_id": [active_id],"default_position_id": active_id}</field>
             <field name="help" type="html">
@@ -23,6 +23,26 @@
             </field>
         </record>
             
+        <record id="act_view_department_list_my" model="ir.actions.act_window">
+            <field name="name">department</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new employee.
+              </p><p>
+                With just a quick glance on the Odoo employee screen, you
+                can easily find all the information you need for each person;
+                contact data, job position, availability, etc.
+              </p>
+            </field>
+        </record>
+
         <record id="view_position_filter" model="ir.ui.view">
             <field name="name">Position Filter</field>
             <field name="model">hr.position</field>
@@ -129,7 +149,7 @@
             <field name="name">Position</field>
             <field name="res_model">hr.position</field>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_mode">tree,kanban,form</field>
         </record>
 
         <menuitem id="menu_view_position_form" parent="hr.menu_hr_root" action="employee_position_view" groups="hr.group_hr_user" sequence="91"/>
@@ -138,7 +158,7 @@
             <field name="name">Positions</field>
             <field name="res_model">hr.position</field>
             <field name="view_type">form</field>
-            <field name="view_mode">kanban,form,tree</field>
+            <field name="view_mode">form,tree,kanban</field>
             <field name="search_view_id" ref="view_position_filter"/>
             <field name="context">{"search_default_position_id": [active_id],"default_position_id": active_id}</field>
             <field name="help" type="html">
@@ -159,6 +179,7 @@
                 </xpath>
             </field>
         </record>
+        
         <record id="hr.hr_department_view_kanban" model="ir.ui.view" >
             <field name="name">hr.department.kanban</field>
             <field name="model">hr.department</field>
