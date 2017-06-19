@@ -6,8 +6,34 @@ import base64
 import sys
 import os
 
+class ImportLine(models.Model):
+    _name = 'hr.employee.importline'
+
+    employee_number = fields.Char(string='Employee Number')
+    department_id = fields.Many2one('hr.departnment', string='Department')
+    position_id = fields.Many2one('hr.position', string='Position')
+    status = fields.Many2one('hr.employee.status', string='Status')
+    sign_contact_date = fields.Date('Signcontact Date')
+    probation_end_date = fields.Date('Probation End Date')
+    title_id = fields.Many2one('hr.employee.title', string='Prefix')
+    first_name_en = fields.Char('Firstname English')
+    last_name_en = fields.Char('Lastname English')
+    first_name_th = fields.Char('Firstname Thai')
+    last_name_th = fields.Char('Lastname Thai')
+    gender = fields.Char('Gender')
+    citizen_id = fields.Char('Citizen ID')
+    religion = fields.Many2one('hr.employee.religion', string='Religion')
+    marital = fields.Char('Marital')
+    birthday = fields.Date('Birthday')
+    blood_group = fields.Char('Bloodgroup')
+    country_id = fields.Many2one('res.country', string='Country')
+    race_id = fields.Many2one('res.country', string='Race')
+    login = fields.Char('Login Name')
+    domain = fields.Char('Domain')
+
+
 class Import(models.Model):
-    _name = 'hr.employee.import'
+    _name = 'hr.import.employee'
 
     def import_employee(self):
         csv = base64.decodestring(self.data)
@@ -22,7 +48,6 @@ class Import(models.Model):
                 data = data[data.index('\n') + 1:]
             arr = []
             while row != '':
-                # print row
                 if row.find(',') == -1:
                     vals = row
                     row = ''
@@ -37,8 +62,6 @@ class Import(models.Model):
             religion = self.env['hr.employee.religion'].search([('name_th', '=', arr[13])])
             counrty = self.env['res.country'].search([('code', '=', arr[17])])
             race = self.env['res.country'].search([('code', '=', arr[18])])
-            # print arr
-            # print datetime.now.strftime("%Y")
             obj = {
                 'employee_number': arr[0],
                 'department_id': department.id,
@@ -66,13 +89,17 @@ class Import(models.Model):
                 'onboarding_date': '03-12-2017',
                 'import': True
             }
-            # print obj
             self.env['hr.employee'].sudo().create(obj)
+
+    def create(self, vals):
+        print vals
+        vals['name'] = '123456'
+        return super(Import, self).create(vals)
 
     name = fields.Char()
     data = fields.Binary('Import')
-    success_row = fields.One2many('hr.employee.importline')
-    fail_row = fields.One2many('hr.employee.importline')
+    success_row = fields.One2many('hr.employee.importline', string='Success')
+    fail_row = fields.One2many('hr.employee.importline', string='Fail')
     state = fields.Boolean(string='State')
     desc = fields.Text('Description')
 

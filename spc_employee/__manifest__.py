@@ -28,6 +28,7 @@
         'views/department.xml',
         'views/address.xml',
         'views/employee.xml',
+        'views/import.xml',
         'views/template.xml'
     ]
 }

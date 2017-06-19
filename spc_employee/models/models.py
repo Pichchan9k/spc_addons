@@ -356,7 +356,7 @@ class Employee(models.Model):
 
             record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
 
-    @api.onchange('onboarding_date')
+    # @api.onchange('onboarding_date')
     def thaiBuddistEra(self):
         cal = calverter.calverter()
         bc = datetime.now().strftime("%Y")
