@@ -1,24 +1,85 @@
 <odoo>
     <data>
         <!-- FormView-->
-        <record id="hr.import.employee_view_form" model="ir.ui.view">
+        <record id="hr_import_employee_view_form" model="ir.ui.view">
             <field name="name">Import</field>
             <field name="model">hr.import.employee</field>
             <field name="arch" type="xml">
-                <sheet>
-                    <group>
-                        <field name="data"/>
-                    </group>
-                </sheet>
+                <form>
+                    <header>
+                        <button name="action_confirm" type="object" string="Confirm" states="import" class="oe_highlight"/>
+                        <button name="action_cancel" type="object" string="Cancel" states="import" class="oe_highlight cancel_button"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="data"/>
+                            <button type='object' name="import_employee" string='Import'/>
+                        </group>
+                        <label for="success_row"/>
+                        <field name="success_row" nolabel='1'>
+                            <tree>
+                                <field name="employee_number"/>
+                                <field name="department_id"/>
+                                <field name="position_id"/>
+                                <field name="status"/>
+                                <field name="sign_contact_date"/>
+                                <field name="probation_end_date"/>
+                                <field name="title_id"/>
+                                <field name="first_name_en"/>
+                                <field name="last_name_en"/>
+                                <field name="first_name_th"/>
+                                <field name="last_name_th"/>
+                                <field name="gender"/>
+                                <field name="citizen_id"/>
+                                <field name="religion"/>
+                                <field name="marital"/>
+                                <field name="birthday"/>
+                                <field name="blood_group"/>
+                                <field name="country_id"/>
+                                <field name="race_id"/>
+                                <field name="login"/>
+                                <field name="domain"/>
+                            </tree>
+                        </field>
+                        <label for="fail_row"/>
+                        <field name="fail_row" nolabel='1'>
+                            <tree>
+                                <field name="employee_number"/>
+                                <field name="department_id"/>
+                                <field name="position_id"/>
+                                <field name="status"/>
+                                <field name="sign_contact_date"/>
+                                <field name="probation_end_date"/>
+                                <field name="title_id"/>
+                                <field name="first_name_en"/>
+                                <field name="last_name_en"/>
+                                <field name="first_name_th"/>
+                                <field name="last_name_th"/>
+                                <field name="gender"/>
+                                <field name="citizen_id"/>
+                                <field name="religion"/>
+                                <field name="marital"/>
+                                <field name="birthday"/>
+                                <field name="blood_group"/>
+                                <field name="country_id"/>
+                                <field name="race_id"/>
+                                <field name="login"/>
+                                <field name="domain"/>
+                            </tree>
+                        </field>
+                        <field name="desc"/>
+                    </sheet>
+                </form> 
             </field>
         </record>
 
-        <record id="hr.import.employee_view_tree" model="ir.ui.view">
+        <record id="hr_import_employee_view_tree" model="ir.ui.view">
             <field name="name">Import</field>
             <field name="model">hr.import.employee</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="data"/>
+                    <field name="name"/>
                     <field name="success_row"/>
                     <field name="fail_row"/>
                     <field name="state"/>
@@ -28,7 +89,7 @@
         <!-- End FormView-->
 
         <!-- SearchView -->
-        <record id="view_position_filter" model="ir.ui.view">
+        <!--<record id="view_position_filter" model="ir.ui.view">
             <field name="name">Position Filter</field>
             <field name="model">hr.position</field>
             <field name="arch" type="xml">
@@ -37,7 +98,7 @@
                     <field name="name_th" string="ตำแหน่ง"/>
                 </search>
             </field>
-        </record>
+        </record>-->
         <!-- End SearchView -->
 
         <!-- Act_window-->
@@ -49,6 +110,6 @@
         </record>
         <!-- End Act_window-->
 
-        <menuitem id="menu_action_import_employee" parent="hr.menu_human_resources_configuration" action="spc_employee_import" />
+        <menuitem id="menu_action_import_employee" action="spc_employee_import" parent="hr.menu_human_resources_configuration"/>
     </data>
 </odoo>

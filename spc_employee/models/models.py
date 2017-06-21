@@ -285,53 +285,12 @@ class Employee(models.Model):
                 digit13 = 0
             else:
                 digit13 = 11 - digit13
-            # if digit13 == int(ciddata[12]):
-                # return True
-            if digit13 != int(ciddata[12]):
-                raise exceptions.ValidationError("Please Input real citizen number")
-
-    @api.onchange('citizen_id')
-    def checkWarning(self):
-        em_ids = self.env['hr.employee'].search([('citizen_id', '=', self.citizen_id)])
-        cid = self.citizen_id
-        if (cid is not False):
-            if(len(cid) != 13):
-                raise exceptions.ValidationError("Please Input CitizenID 13 number")
-
-            if(len(em_ids) != 1):
-                raise exceptions.ValidationError("Please Input CitizenID 13 number")
-
-            if(len(em_ids) != 1):
-                raise exceptions.ValidationError("Please use other CitizenID")
-
-            for char in cid:
-                if char.isdigit() is False:
-                    raise exceptions.ValidationError("Please Input only number")
-            num = 0
-            num2 = 13
-            ciddata = list(cid)
-            sum = 0
-            while num < 12:
-                sum += int(ciddata[num]) * (num2 - num)
-                num += 1
-            digit13 = sum % 11
-            if digit13 == 0:
-                digit13 = 1
-            elif digit13 == 1:
-                digit13 = 0
-            else:
-                digit13 = 11 - digit13
-            # if digit13 == int(ciddata[12]):
-                # return True
             if digit13 != int(ciddata[12]):
                 raise exceptions.ValidationError("Please Input real citizen number")
 
     @api.onchange('first_name_en', 'last_name_en')
     def name_en(self):
         self.name = '%s %s' % (self.first_name_en, self.last_name_en)
-        # if self.first_name_en is not False and self.last_name_en is not False:
-        #     email = '%s.%s' % (self.first_name_en, self.last_name_en[0][:1])
-        #     self.user = email.lower()
 
     @api.onchange('first_name_th', 'last_name_th')
     def name_th(self):
@@ -340,27 +299,26 @@ class Employee(models.Model):
     def employee_age(self):
         now_year = datetime.now().strftime("%Y")
         for record in self:
-            year_of_birthday = record.birthday[:4]
-            record.age = int(now_year) - int(year_of_birthday)
+            if record.birthday is False:
+                record.age = 0
+            else:
+                year_of_birthday = record.birthday[:4]
+                record.age = int(now_year) - int(year_of_birthday)
 
     def employee_duration(self):
         # print 'employee duration'
         now_year = datetime.now().strftime("%Y")
         now_month = datetime.now().strftime("%m")
         for record in self:
-            year_of_start = record.onboarding_date[:4]
-            year_of_dulation = int(now_year) - int(year_of_start)
+            if record.onboarding_date is False:
+                record.duration_of_employment = 'None'
+            else:
+                year_of_start = record.onboarding_date[:4]
+                year_of_dulation = int(now_year) - int(year_of_start)
 
-            month_of_start = record.onboarding_date[5:][:2]
-            mounth_of_duration = int(now_month) - int(month_of_start)
-
-            record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
-
-    # @api.onchange('onboarding_date')
-    def thaiBuddistEra(self):
-        cal = calverter.calverter()
-        bc = datetime.now().strftime("%Y")
-        be = cal.leap_thaibuddist(int(bc))
+                month_of_start = record.onboarding_date[5:][:2]
+                mounth_of_duration = int(now_month) - int(month_of_start)
+                record.duration_of_employment = '%s/%02d' % (year_of_dulation, mounth_of_duration)
 
     name_th = fields.Char('Name Thai')
     user = fields.Char('Username', readonly=True)
@@ -441,8 +399,8 @@ class Employee(models.Model):
         print 'onboarding create'
         employee = super(Employee, self).create(vals)
         # res_users = self.create_users(employee)
-        command = 'python spc_addons/spc_employee/models/create_employee.py %s %s %s %s %s' % (str(employee.id), str(employee.first_name_en), str(employee.last_name_en), str(employee.email), str(employee.department_id.name))
-        os.system(command)
+        # command = 'python spc_addons/spc_employee/models/create_employee.py %s %s %s %s %s' % (str(employee.id), str(employee.first_name_en), str(employee.last_name_en), str(employee.email), str(employee.department_id.name))
+        # os.system(command)
         # employee.user_id = res_users.id
         # onboarding_equipment_ids = self.equipment_from_onboarding(employee)
         return employee
