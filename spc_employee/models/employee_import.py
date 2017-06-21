@@ -9,33 +9,37 @@ import os
 class ImportLine(models.Model):
     _name = 'hr.employee.importline'
 
-    employee_number = fields.Char(string='Employee Number')
-    department_id = fields.Many2one('hr.departnment', string='Department')
+    name = fields.Char('Displayname')
+    employee_number = fields.Char('Employee Number')
+    department_id = fields.Many2one('hr.department', string='Department')
     position_id = fields.Many2one('hr.position', string='Position')
-    status = fields.Many2one('hr.employee.status', string='Status')
-    sign_contact_date = fields.Date('Signcontact Date')
-    probation_end_date = fields.Date('Probation End Date')
+    status_id = fields.Many2one('hr.employee.status', string='Status')
+    sign_contact_date = fields.Date('SignDate')
+    probation_end_date = fields.Date('ProbationEndDate')
     title_id = fields.Many2one('hr.employee.title', string='Prefix')
-    first_name_en = fields.Char('Firstname English')
-    last_name_en = fields.Char('Lastname English')
-    first_name_th = fields.Char('Firstname Thai')
-    last_name_th = fields.Char('Lastname Thai')
+    first_name_en = fields.Char('FnameEng')
+    last_name_en = fields.Char('LnameEng')
+    first_name_th = fields.Char('FnameTh')
+    last_name_th = fields.Char('LnameTh')
     gender = fields.Char('Gender')
-    citizen_id = fields.Char('Citizen ID')
+    citizen_id = fields.Char('CitizenID')
     religion = fields.Many2one('hr.employee.religion', string='Religion')
     marital = fields.Char('Marital')
     birthday = fields.Date('Birthday')
     blood_group = fields.Char('Bloodgroup')
     country_id = fields.Many2one('res.country', string='Country')
     race_id = fields.Many2one('res.country', string='Race')
-    login = fields.Char('Login Name')
+    login = fields.Char('Loginame')
     domain = fields.Char('Domain')
 
+    import_ref = fields.Many2one('hr.import.employee')
+    status = fields.Selection([('success', 'Success'), ('fail', 'Fail')], string='Status')
 
 class Import(models.Model):
     _name = 'hr.import.employee'
 
     def import_employee(self):
+        print self
         csv = base64.decodestring(self.data)
         head = csv[:csv.index('\n') - 1]
         data = csv[csv.index('\n') + 1:]
@@ -58,6 +62,7 @@ class Import(models.Model):
             department = self.env['hr.department'].search([('code', '=', arr[1])])
             position = self.env['hr.position'].search([('code', '=', arr[2])])
             status = self.env['hr.employee.status'].search([('name_th', '=', arr[3])])
+            print 'status -------', status.id
             title = self.env['hr.employee.title'].search([('name', '=', arr[6])])
             religion = self.env['hr.employee.religion'].search([('name_th', '=', arr[13])])
             counrty = self.env['res.country'].search([('code', '=', arr[17])])
@@ -66,7 +71,7 @@ class Import(models.Model):
                 'employee_number': arr[0],
                 'department_id': department.id,
                 'position_id': position.id,
-                'status': status.id,
+                'status_id': status.id,
                 'sign_contact_date': '03-12-2017',
                 'probation_end_date': '03-12-2017',
                 'title_id': title.id,
@@ -87,22 +92,35 @@ class Import(models.Model):
                 'nick_name_th': '',
                 'nick_name_en': '',
                 'onboarding_date': '03-12-2017',
-                'import': True
+                'login': arr[19],
+                'domain': arr[20],
+                'import_ref': self.id,
+                'status': 'fail'
             }
-            self.env['hr.employee'].sudo().create(obj)
+            # self.env['hr.employee'].sudo().create(obj)
+            import_line = self.env['hr.employee.importline'].sudo().create(obj)
+            self.write({'success_row': [(4, import_line.id)]})
 
+    def action_import(self):
+        print 'action_import'
+
+    def action_confirm(self):
+        print 'action_confirm'
+        self.state = 'confirm'
+
+    def action_cancel(self):
+        print 'action_cancel'
+        self.state = 'cancel'
+
+    @api.model
     def create(self, vals):
-        print vals
-        vals['name'] = '123456'
-        return super(Import, self).create(vals)
+        import_employee = super(Import, self).create(vals)
+        import_employee.name = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        return import_employee
 
-    name = fields.Char()
+    name = fields.Char('Displayname')
     data = fields.Binary('Import')
-    success_row = fields.One2many('hr.employee.importline', string='Success')
-    fail_row = fields.One2many('hr.employee.importline', string='Fail')
-    state = fields.Boolean(string='State')
+    success_row = fields.One2many('hr.employee.importline', 'import_ref', string='Success', domain=[('status', '=', 'success')])
+    fail_row = fields.One2many('hr.employee.importline', 'import_ref', string='Fail', domain=[('status', '=', 'fail')])
+    state = fields.Selection([('draft', 'Draft'), ('import', 'Imported'), ('confirm', 'Confirmed'), ('cancel', 'Cancelled')], string='State', default='draft')
     desc = fields.Text('Description')
-
-# Gender -male -female -other
-# blood -a -b -ab -o
-# marital -single -married -widower -divorced
