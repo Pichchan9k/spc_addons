@@ -17,7 +17,6 @@ class NameGet:
 
 class EducationLevel:
     def get_education_level(self):
-        # print 'get_education_level'
         return [('primery', 'Primary School'), ('secondary', 'Secondary School'), ('high', 'High School'), ('college/vocational', 'College'), ('bachelor', 'Bachelor Degree'), ('higher', 'Master Degree or higher')]
 
 class Department(models.Model):
@@ -31,7 +30,6 @@ class Employee_type(models.Model):
 
     name = fields.Char('Employee Type EN', required=True)
     name_th = fields.Char('Employee Type TH', required=True)
-
 
 class Position(models.Model):
     _name = 'hr.position'
@@ -110,7 +108,7 @@ class Address(models.Model):
     _name = 'spc.address'
 
     address_type = fields.Many2one('spc.address.type', string='Address Type', required=True)
-    addr1 = fields.Char('Address', required=True)
+    addr_info = fields.Char('Address', required=True)
     provice_id = fields.Many2one('spc.address.provice', string='Provice', required=True)
     district_id = fields.Many2one('spc.address.district', string='District', required=True)
     subdistrict_id = fields.Many2one('spc.address.subdistrict', string='Subdistrict', required=True)
@@ -360,7 +358,7 @@ class Employee(models.Model):
     children_line = fields.One2many('hr.employee.children', 'children_id', string='No. of Children', copy=True)
     # education background
     education = fields.One2many('spc.employee.edu', 'education_id', string='Education Background')
-    intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study', required=True)
+    intend_further_study = fields.Selection([('no', 'No'), ('yes', 'Yes'), ('domestic', 'Domestic'), ('abroad', 'Abroad')], string='Intend to further study')
     studying_at = fields.Many2one('spc.institute', string='Studying at')
     studying_major = fields.Char(string='Major')
     studying_year_of_end = fields.Char(string='Year of graduation', limit=4)
@@ -386,9 +384,9 @@ class Employee(models.Model):
     past_job = fields.One2many('hr.employee.pastjob', 'pastjob_id', string='Record')
 
     ever_worked_sahagroup = fields.Boolean(string="Have you ever working with SAHA GROUP?")
-    work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?', required=True)
+    work_shift = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you work for shift?')
     reason_for_shift = fields.Char('Reason')
-    travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?', required=True)
+    travel = fields.Selection([('yes', 'Yes'), ('no', 'No')], string='Can you travelling abroad?')
     reason_travel = fields.Char(string='Reason')
 
     # References

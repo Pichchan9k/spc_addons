@@ -125,7 +125,7 @@
                                         <field name="work_phone"/>
                                     </group>
                                 </page>
-                                <page name="public" string="Public Information">
+                                <page name="public" string="Public Information" groups="hr.group_hr_user">
                                     <group string="Citizenship &amp; Other Information" name="citizenship">
                                         <group >
                                             <field name="country_id" options='{"no_open": True, "no_create": True}' required='1'/>
