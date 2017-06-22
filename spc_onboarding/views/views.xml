@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
+<<<<<<< HEAD
         <menuitem id="menu_equipment" name="Equipment Onboarding" parent="hr.menu_hr_root" sequence="99" groups="hr.group_hr_user"/>
+=======
+        <menuitem id="menu_equipment" name="Equipment Onboarding" parent="hr.menu_hr_root" sequence="99"/>
+>>>>>>> a18558f72792707cf07e8d95c1e67f3119b71411
         <menuitem id="menu_onboarding_equipment" parent="menu_equipment" action="action_onboarding_equipment" groups="hr.group_hr_user"/>
         <menuitem id="menu_onboarding_mastereq" parent="menu_equipment" action="action_onboarding_mastereq" groups="hr.group_hr_user"/>
         <menuitem id="menu_onboarding_category" parent="menu_equipment" action="action_onboarding_category" groups="hr.group_hr_user"/>
