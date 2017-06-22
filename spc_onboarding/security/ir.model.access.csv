@@ -1,2 +1,12 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_spc_event_spc_event,spc_event.spc_event,model_spc_event_spc_event,,1,0,0,0
+onboarding_equipment_all,onboarding_equipment all,model_onboarding_equipment,,1,0,0,0
+maintenance_equipment_brand_all,maintenance_equipment_brand all,model_maintenance_equipment_brand,,1,0,0,0
+equipment_mastereq_all,equipment_mastereq all,model_onboarding_equipment_mastereq,,1,0,0,0
+
+onboarding_equipment_officer,onboarding_equipment officer,model_onboarding_equipment,hr.group_hr_user,1,1,0,0
+maintenance_equipment_brand_officer,maintenance_equipment_brand officer,model_maintenance_equipement_brand,hr.group_hr_user,1,1,0,0
+equipment_mastereq_officer,equipment_mastereq officer,model_onboarding_equipment_mastereq,hr.group_hr_user,1,1,0,0
+
+onboarding_equipment_manager,onboarding_equipment manager,model_onboarding_equipment,hr.group_hr_manager,1,1,1,1
+maintenance_equipment_brand_manager,maintenance_equipment_brand manager,model_maintenance_equipement_brand,hr.group_hr_manager,1,1,1,1
+equipment_mastereq_manager,equipment_mastereq manager,model_onboarding_equipment_mastereq,hr.group_hr_manager,1,1,1,1
