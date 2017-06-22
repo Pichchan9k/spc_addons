@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <menuitem id="menu_equipment" name="Equipment Onboarding" parent="hr.menu_hr_root" sequence="99"/>
-        <menuitem id="menu_onboarding_equipment" parent="menu_equipment" action="action_onboarding_equipment" groups="base.group_user"/>
-        <menuitem id="menu_onboarding_mastereq" parent="menu_equipment" action="action_onboarding_mastereq" groups="base.group_user"/>
-        <menuitem id="menu_onboarding_category" parent="menu_equipment" action="action_onboarding_category" groups="base.group_user"/>
+        <menuitem id="menu_equipment" name="Equipment Onboarding" parent="hr.menu_hr_root" sequence="99" groups="hr.group_hr_user"/>
+        <menuitem id="menu_onboarding_equipment" parent="menu_equipment" action="action_onboarding_equipment" groups="hr.group_hr_user"/>
+        <menuitem id="menu_onboarding_mastereq" parent="menu_equipment" action="action_onboarding_mastereq" groups="hr.group_hr_user"/>
+        <menuitem id="menu_onboarding_category" parent="menu_equipment" action="action_onboarding_category" groups="hr.group_hr_user"/>
         <menuitem id="maintenance.menu_equipment_form" name="Equipments" parent="maintenance.menu_maintenance_title"/>
-        <menuitem id="menu_equipment_draft_form" name="Equipments Pending / Confirmed" parent="maintenance.menu_equipment_form" action="action_maintenance_equipment_draft_form" sequence="1"/>
-        <menuitem id="menu_equipment_done_form" name="Equipments Done" parent="maintenance.menu_equipment_form" action="action_maintenance_equipment_done_form" sequence="2"/>
+        <menuitem id="menu_equipment_draft_form" name="Equipments Pending / Confirmed" parent="maintenance.menu_equipment_form" action="action_maintenance_equipment_draft_form" sequence="1" groups="hr.group_hr_user"/>
+        <menuitem id="menu_equipment_done_form" name="Equipments Done" parent="maintenance.menu_equipment_form" action="action_maintenance_equipment_done_form" sequence="2" groups="hr.group_hr_user"/>
     </data>
 </odoo>

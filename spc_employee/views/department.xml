@@ -152,8 +152,6 @@
             <field name="view_mode">tree,kanban,form</field>
         </record>
 
-        <menuitem id="menu_view_position_form" parent="hr.menu_hr_root" action="employee_position_view" groups="hr.group_hr_user" sequence="91"/>
-
          <record id="act_position_from_department" model="ir.actions.act_window">
             <field name="name">Positions</field>
             <field name="res_model">hr.position</field>
@@ -246,6 +244,7 @@
                 </kanban>
             </field>
         </record>
-        <menuitem action="hr.open_module_tree_department" id="hr.menu_hr_department_tree" parent="hr.menu_hr_root" sequence="4" groups="hr.group_hr_user"/>
+        <menuitem id="hr.menu_hr_department_tree" action="hr.open_module_tree_department" parent="hr.menu_hr_root" groups="hr.group_hr_user" sequence="4" />
+        <menuitem id="menu_view_position_form" action="employee_position_view" parent="hr.menu_hr_root" groups="hr.group_hr_user" sequence="91"/>
     </data>
 </odoo>

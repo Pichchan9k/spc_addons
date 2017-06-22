@@ -281,11 +281,7 @@
                 <p class="oe_view_nocontent_create"></p>
             </field>
         </record>
-        <!-- category -->
-        <!--<record model="ir.ui.view" id="onboarding_category_form"><field name="name">categoryeq.form</field><field name="model">onboarding.categoryeq</field><field name="arch" type="xml"><form string="Category Form"><sheet><group><group string="Category Infomation"><field name="name"/></group><notebook><page string="Description"><field name="description"/></page></notebook></group></sheet></form></field></record>-->
-        <!--<record model="ir.actions.act_window" id="action_onboarding_category"><field name="name">Category</field><field name="res_model">onboarding.categoryeq</field><field name="view_type">form</field><field name="view_mode">tree,form</field><field name="help" type="html"><p class="oe_view_nocontent_create">Create items</p></field></record>-->
-        <!--<record id="onboarding_mastereq_categoryeq_form" model="ir.ui.view"><field name="name">mastereq.form</field><field name="model">onboarding.equipment.categoryeq</field><field name="arch" type="xml"><form string="Equipments"><sheet><group><field name="name"/><field name="description"/></group></sheet></form></field></record>-->
-        <!--<record id="onboarding_mastereq_categoryeq_tree" model="ir.ui.view"><field name="name">onboarding.mastereq.categoryeq_tree</field><field name="model">onboarding.equipment.categoryeq</field><field name="arch" type="xml"><tree><field name="name"/></tree></field></record><record id="onboarding_mastereq_categoryeq_search" model="ir.ui.view"><field name="name">onboarding.mastereq.categoryeq_search</field><field name="model">onboarding.equipment.categoryeq</field><field name="arch" type="xml"><search><field name="name"/></search></field></record>-->
+
         <record id="action_onboarding_category" model="ir.actions.act_window">
             <field name="name">Category</field>
             <field name="res_model">maintenance.equipment.category</field>

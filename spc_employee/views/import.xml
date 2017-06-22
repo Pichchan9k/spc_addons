@@ -110,6 +110,7 @@
         </record>
         <!-- End Act_window-->
 
-        <menuitem id="menu_action_import_employee" action="spc_employee_import" parent="hr.menu_human_resources_configuration"/>
+        <menuitem id="menu_action_import_employee" action="spc_employee_import" parent="hr.menu_human_resources_configuration"
+            groups="hr.group_hr_user"/>
     </data>
 </odoo>
