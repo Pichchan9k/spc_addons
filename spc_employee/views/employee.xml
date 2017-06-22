@@ -178,7 +178,7 @@
                                         <field name='address_line' nolabel='1'>
                                             <tree string='Address' editable="bottom">
                                                 <field name='address_type'/>
-                                                <field name='addr1'/>
+                                                <field name='addr_info'/>
                                                 <field name='provice_id' />
                                                 <field name='district_id' />
                                                 <field name='subdistrict_id' />
