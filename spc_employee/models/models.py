@@ -107,12 +107,27 @@ class AddressType(models.Model):
 class Address(models.Model):
     _name = 'spc.address'
 
-    address_type = fields.Many2one('spc.address.type', string='Address Type', required=True)
-    addr_info = fields.Char('Address', required=True)
-    provice_id = fields.Many2one('spc.address.provice', string='Provice', required=True)
-    district_id = fields.Many2one('spc.address.district', string='District', required=True)
-    subdistrict_id = fields.Many2one('spc.address.subdistrict', string='Subdistrict', required=True)
-    zipcode_id = fields.Many2one('spc.address.zipcode', string='Zip Code', required=True)
+    @api.onchange('provice_id')
+    def provice_id(self):
+        print 'provice_id', self
+
+    @api.depends('provice_id')
+    def _test_ja(self):
+        print 'after provice', self
+
+    def _get_district(self):
+        print self
+        print '_get_district', self.provice_id
+        ids = [1857, 1858]
+        return [('id', 'in', ids)]
+
+    address_type = fields.Many2one('spc.address.type', string='Address Type', required=False)
+    addr_info = fields.Char('Address', required=False)
+    provice_id = fields.Many2one('spc.address.provice', string='Provice', required=False, select=True)
+    district_id = fields.Many2one('spc.address.district', string='District', required=False, domain=_get_district)
+    # district_id = fields.Many2one('spc.address.district', string='District', required=False, domain=lambda self: [('provice_id', '=', self.provice_id._pid)])
+    subdistrict_id = fields.Many2one('spc.address.subdistrict', string='Subdistrict', required=False)
+    zipcode_id = fields.Many2one('spc.address.zipcode', string='Zip Code', required=False)
     address_id = fields.Many2one('hr.employee', string='Address Reference', index=True, required=False, ondelete='cascade')
 
 class LangageSkillName(models.Model):
@@ -352,6 +367,10 @@ class Employee(models.Model):
     tel_line = fields.One2many('spc.telephone', 'tel_id', string='Telephone', copy=True)
 
     #address
+    @api.onchange('address_line')
+    def address_line(self):
+        print '---------------------- provice_id', self
+
     address_line = fields.One2many('spc.address', 'address_id', string='Address', copy=True)
 
     #children
